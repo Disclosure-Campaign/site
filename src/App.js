@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import AppRouter from './components/appRouter';
 import './App.css';
 
 import api from './api';
@@ -15,28 +15,10 @@ const handleClick = async () => {
   }
 }
 
-function App() {
-  return (
+const App = () => (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={handleClick}>
-          Run Test Function
-        </button>
-      </header>
+        <AppRouter />
     </div>
-  );
-}
+);
 
 export default App;
