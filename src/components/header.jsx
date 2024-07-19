@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import config from 'config';
+import { copy, styles } from 'global';
 
 const menuLinks = [
   {name: 'About', key: 'about'},
@@ -17,12 +17,12 @@ const Header = () => {
   };
 
   return (
-    <header className={config.styles.primaryColor + "text-white p-4"}>
+    <header className={`${styles.primaryColorBg} text-white p-4`}>
       <div className="container mx-auto flex items-center justify-between">
-        <Link to='/' className="text-lg font-bold">{config.siteName}</Link>
+        <Link to='/' className="text-lg font-bold">{copy.siteName}</Link>
         <nav className="hidden md:flex space-x-4">
           {_.map(menuLinks, ({name, key}) =>
-            <Link to={'/' + key} className="hover:text-gray-300">{name}</Link>
+            <Link to={'/' + key} key={key} className="hover:text-gray-300">{name}</Link>
           )}
         </nav>
         <button
