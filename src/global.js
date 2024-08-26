@@ -9,7 +9,7 @@ const styles = {
     text: 'text-white',
 
     standardSpace: 4,
-    borderRadius: 'rounded-2xl',
+    border: 'border rounded-2xl',
 
     wiggle: 'button-wiggle hover:scale-105'
 };
@@ -27,7 +27,7 @@ styles.darkenOnPressButton = `
 
 styles.button = `
     ${styles.darkenOnPressButton}
-    ${styles.borderRadius}
+    ${styles.border}
     ${styles.wiggle}
     ${styles.text}
     ${styles.lighterPrimaryColorText}

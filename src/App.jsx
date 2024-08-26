@@ -1,25 +1,47 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { configureStore } from '@reduxjs/toolkit';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import rootReducer from './redux/reducers';
-import Home from './pages/home/Home';
-import Results from './pages/results/Results';
-import Header from './components/Header';
+import api from 'api';
+import { addPoliticians } from './redux/actions';
 
-const store = createStore(rootReducer);
+import RoutesComponent from './components/routes';
+import Header from './components/header';
 
-const App = () => (
-  <Provider store={store}>
-    <Header/>
+const App = () => {
+  const dispatch = useDispatch();
+  const hasFetched = useRef(false);
+
+  const memoizedAddPoliticians = useCallback(data => {
+    dispatch(addPoliticians(data));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (hasFetched.current) {
+      const setEntities = async () => {
+        const {keyedPoliticians, sortedPoliticians} = await api.requestSearchableEntities({});
+
+        console.log({keyedPoliticians, sortedPoliticians})
+
+        memoizedAddPoliticians({keyedPoliticians, sortedPoliticians});
+      }
+
+      setEntities()
+    } else {
+      hasFetched.current = true;
+    }
+  }, [memoizedAddPoliticians]);
+
+  return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/results" element={<Results />} />
-      </Routes>
+      <div className='App'>
+        <Header/>
+        <main className='container mx-auto p-4'>
+          <RoutesComponent/>
+        </main>
+      </div>
     </Router>
-  </Provider>
-);
+  );
+}
 
 export default App;

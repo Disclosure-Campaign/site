@@ -1,30 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import _ from 'lodash';
 
 import Home from '../pages/homePage';
+import PoliticianPage from '../pages/showPages/politicianShowPage';
 import About from '../pages/aboutPage';
 import Contact from '../pages/contactPage';
 import NotFound from '../pages/404';
-import Layout from './layout';
 
 const pages = [
   {path: '/', element: <Home/>},
+  {path: '/politician/:id', element: <PoliticianPage/>},
   {path: '/about', element: <About/>},
   {path: '/contact', element: <Contact/>},
   {path: '/*', element: <NotFound/>}
-]
+];
 
-const AppRouter = () => {
-  return (
-    <Router>
-      <Layout>
-        <Routes>
-          {_.map(pages, ({path, element}) => <Route path={path} element={element} key={path}/>)}
-        </Routes>
-      </Layout>
-    </Router>
-  );
-};
+const RoutesComponent = () => (
+  <Routes>
+    {_.map(pages, ({path, element}) => <Route path={path} element={element} key={path}/>)}
+  </Routes>
+);
 
-export default AppRouter;
+
+export default RoutesComponent;

@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import todosReducer from './features/todos/todosSlice';
+import politiciansReducer from './features/politicians/politiciansSlice';
 import authReducer from './features/auth/authSlice';
 
-const store = configureStore({
+const Store = configureStore({
   reducer: {
-    todos: todosReducer,
+    politicians: politiciansReducer,
     auth: authReducer,
   },
 });
 
-export default store;
+export default Store;

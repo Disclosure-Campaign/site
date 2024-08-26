@@ -17,8 +17,8 @@ const Header = () => {
   };
 
   return (
-    <header className={`${styles.primaryColorBg} text-white p-4`}>
-      <div className="container mx-auto flex items-center justify-between">
+    <header className={`text-white p-4 bg-blue-600 ${styles.primaryColorBg}`}>
+      <div className={`container mx-auto flex items-center justify-between`}>
         <Link to='/' className="text-lg font-bold">{copy.siteName}</Link>
         <nav className="hidden md:flex space-x-4">
           {_.map(menuLinks, ({name, key}) =>
@@ -48,7 +48,7 @@ const Header = () => {
       {isMenuOpen && (
         <nav className="md:hidden flex flex-col space-y-2 mt-2">
           {_.map(menuLinks, ({name, key}) =>
-            <Link to={'/' + key} className="hover:text-gray-300" onClick={toggleMenu}>{name}</Link>
+            <Link to={'/' + key} key={key} className="hover:text-gray-300" onClick={toggleMenu}>{name}</Link>
           )}
         </nav>
       )}
