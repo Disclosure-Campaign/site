@@ -4,8 +4,8 @@ const copy = {
 };
 
 const styles = {
-    primaryColor: 'blue-600',
-    lighterPrimaryColor: 'blue-500',
+    primaryColor: 'emerald-600',
+    lighterPrimaryColor: 'emerald-500',
     text: 'text-white',
 
     standardSpace: 4,

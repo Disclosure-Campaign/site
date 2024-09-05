@@ -21,8 +21,6 @@ const App = () => {
       const setEntities = async () => {
         const {keyedPoliticians, sortedPoliticians} = await api.requestSearchableEntities({});
 
-        console.log({keyedPoliticians, sortedPoliticians})
-
         memoizedAddPoliticians({keyedPoliticians, sortedPoliticians});
       }
 
@@ -34,9 +32,9 @@ const App = () => {
 
   return (
     <Router>
-      <div className='App'>
+      <div className='w-screen h-screen'>
         <Header/>
-        <main className='container mx-auto p-4'>
+        <main className='w-screen h-[92vh]'>
           <RoutesComponent/>
         </main>
       </div>

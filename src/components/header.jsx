@@ -17,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <header className={`text-white p-4 bg-blue-600 ${styles.primaryColorBg}`}>
+    <header className={`text-white p-4 h-[8vh] bg-emerald-600 ${styles.primaryColorBg}`}>
       <div className={`container mx-auto flex items-center justify-between`}>
         <Link to='/' className="text-lg font-bold">{copy.siteName}</Link>
         <nav className="hidden md:flex space-x-4">
