@@ -2,17 +2,20 @@ import React from 'react';
 
 import Card from 'components/card';
 
-const BioCard = ({data, politician, delay}) => {
-  const { fullName, depictionImageUrl, party, currentTitle } = data;
+const BioCard = ({entity: politician, delay, cardKey, infoCallback}) => {
+  const {fullName, dataGroups} = politician;
+  const {depictionImageUrl, party, currentTitle} = dataGroups[cardKey];
+
+  const props = {delay, cardKey, infoCallback};
 
   return (
-    <Card {...{delay, dataSource: {name: 'Congress.gov', link: 'www.congress.gov'}}}>
+    <Card {...props}>
       {depictionImageUrl ? (
         <div className='w-2/3 p-4'>
           <img
-            src={depictionImageUrl}
-            alt={`${fullName} depiction`}
             className='w-full h-auto object-contain'
+            alt={`${fullName} depiction`}
+            src={depictionImageUrl}
           />
         </div>
       ) : (

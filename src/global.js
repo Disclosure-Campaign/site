@@ -1,6 +1,35 @@
 const copy = {
     siteName: 'Disclosure Campaign',
-    introText: 'Disclosure Campaign is a site to research money in politics'
+    introText: 'Disclosure Campaign is a site to research money in politics',
+    dataSources: {
+        congressGov: {
+            name: 'Congress.gov',
+            baseUrl: 'www.congress.gov',
+            shortDescription: `
+                Congress.gov is the United States' official website for its federal
+                legislative information.
+            `,
+            longDescription: `
+
+            `
+        },
+        openSecrets: {
+            name: 'Open Secrets',
+            baseUrl: 'www.opensecrets.org',
+            shortDescription: `
+                Open Secrets is a nonpartisan, nonprofit organization trying to address the issue of money in politics.
+            `,
+            longDescription: `
+                From their 'about' page:
+                "Nonpartisan, independent and nonprofit, OpenSecrets is the nation's
+                premier research group tracking money in U.S. politics and its effect
+                on elections and public policy. Our mission is to track the flow of
+                money in American politics and provide the data and analysis to strengthen
+                democracy. Our vision is for Americans to use this knowledge to create
+                a more vibrant, representative and accountable democracy."
+            `
+        }
+    }
 };
 
 const styles = {
@@ -11,7 +40,20 @@ const styles = {
     standardSpace: 4,
     border: 'border rounded-2xl',
 
+    clickable: 'text-blue-500 cursor-pointer',
+
     wiggle: 'button-wiggle hover:scale-105'
+};
+
+const cardSourceMap = {
+    bio: 'congressGov',
+    sponsoredLegislation: 'congressGov',
+    cosponsoredLegislation: 'congressGov',
+    memProf: 'openSecrets',
+    candContrib: 'openSecrets',
+    bill: 'congressGov',
+    summaries: 'congressGov',
+    sponsors: 'congressGov'
 };
 
 styles.primaryColorBg = `bg-${styles.primaryColor}`;
@@ -36,9 +78,9 @@ styles.button = `
 `;
 
 styles.icon = `
-    'px-3 bg-gray-100 border-r'
+    px-3 border-r
     ${styles.lighterPrimaryColorText}
     hover:${styles.primaryColorText}
 `;
 
-export { copy, styles };
+export { copy, styles, cardSourceMap };

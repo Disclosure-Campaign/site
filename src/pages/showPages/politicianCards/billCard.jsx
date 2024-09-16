@@ -2,19 +2,22 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
+// import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import Card from 'components/card';
 
+import { extractBillVars } from 'helpers';
 import { styles } from 'global';
 
-const BillCard = ({data: bills, politician, delay, cardKey}) => {
+const BillCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   const [displayCount, setDisplayCount] = useState(5);
   // const [sortOrder, setSortOrder] = useState('desc');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const {fullName} = politician;
+  const {fullName, dataGroups} = politician;
+  const bills = dataGroups[cardKey];
+
 
   const label = {
     'sponsoredLegislation': 'Legislation sponsored',
@@ -22,7 +25,7 @@ const BillCard = ({data: bills, politician, delay, cardKey}) => {
   }[cardKey];
 
   const processedBills = useMemo(
-    () => bills.map(bill => ({...bill, dateObject: new Date(bill['date:'])})),
+    () => _.map(bills, bill => ({...bill, dateObject: new Date(bill['date:'])})),
     [bills]
   );
 
@@ -59,8 +62,10 @@ const BillCard = ({data: bills, politician, delay, cardKey}) => {
 
   const visibleBills = filteredBills.slice(0, displayCount);
 
+  const props = {delay, cardKey, infoCallback};
+
   return (
-    <Card {...{delay, dataSource: {name: 'Congress.gov', link: 'www.congress.gov'}}}>
+    <Card {...props}>
       <p className='text-gray-700 mb-2 font-bold'>{label} by {fullName}:</p>
       {_.isEmpty(bills) ? (
         <p className='text-gray-700 mb-2'>
@@ -97,26 +102,29 @@ const BillCard = ({data: bills, politician, delay, cardKey}) => {
             <p className='text-gray-700 mb-2 font-bold'>No legislation matches these filters.</p>
           ) : (
             <div>
-              {_.map(visibleBills, ({title, dateObject, subject, url}, index) => (
-                <div key={index} className='p-4 border-b'>
-                  <h4 className='font-bold'>{title}</h4>
-                  <p>Date: {dateObject.toLocaleDateString()}</p>
-                  <p>Subject: {subject || 'Other'}</p>
-                  <Link to={`${url}`} target='_blank' rel='noopener noreferrer' className='flex flex-row text-blue-500'>
-                    View Bill
-                    {/* ex: https://api.congress.gov/v3/bill/118/hres/1419?format=json */}
-                    <div className='ml-2 py-1 h-4 w-4 rounded-full'>
-                      <ArrowTopRightOnSquareIcon />
-                    </div>
-                  </Link>
-                </div>
-              ))}
+              {_.map(visibleBills, ({title, dateObject, subject, url}, index) => {
+                var {congress, type, id} = extractBillVars(url);
+
+                return (
+                  <div key={index} className='p-4 border-b'>
+                    <h4 className='font-bold'>{title}</h4>
+                    <p>Date: {dateObject.toLocaleDateString()}</p>
+                    <p>Subject: {subject || 'Other'}</p>
+                    <Link to={`/bill/${congress}/${type}/${id}`} className='flex flex-row text-blue-500'>
+                      View Bill
+                      {/* <div className='ml-2 py-1 h-4 w-4 rounded-full'>
+                        <ArrowTopRightOnSquareIcon />
+                      </div> */}
+                    </Link>
+                  </div>
+                )
+              })}
             </div>
           )}
           {visibleBills.length < filteredBills.length && (
             <div
               onClick={() => setDisplayCount(displayCount + 5)}
-              className='text-blue-500'
+              className={styles.clickable}
             >
               Show More
             </div>

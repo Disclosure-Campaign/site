@@ -198,12 +198,12 @@ const SearchBar = () => {
           </div>
         </div>
       )}
-      <div className='mt-4'>
+      {/* <div className='mt-4'>
         <Button
           text={isAdvanced ? 'Standard' : 'Advanced'}
           onClick={toggleSearchMode}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

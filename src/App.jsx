@@ -19,7 +19,9 @@ const App = () => {
   useEffect(() => {
     if (hasFetched.current) {
       const setEntities = async () => {
-        const {keyedPoliticians, sortedPoliticians} = await api.requestSearchableEntities({});
+        const {keyedPoliticians, sortedPoliticians} = await api.requestData({
+          route: 'request_searchable_entities'
+        });
 
         memoizedAddPoliticians({keyedPoliticians, sortedPoliticians});
       }

@@ -4,3 +4,11 @@ export const formatCurrency = (amount, currency = 'USD', locale = 'en-US') => ne
   minimumFractionDigits: 0,
   maximumFractionDigits: 2
 }).format(amount);
+
+export const extractBillVars = url => {
+  const baseRemoved = url.replace('https://api.congress.gov/v3/bill/', '');
+  const queryRemoved = baseRemoved.split('?')[0];
+  const [congress, type, id] = queryRemoved.split('/');
+
+  return {congress, type, id};
+}

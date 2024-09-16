@@ -22,7 +22,10 @@ const requestPoliticianDetails = createAsyncThunk(
       loading[politicianId] = true;
 
       try {
-        result = await api.requestData({type: 'politician', id: politicianId});
+        result = await api.requestData({
+          route: 'request_politician_data',
+          id: politicianId
+        });
       } catch (error) {
         result = rejectWithValue(error.message);
       }

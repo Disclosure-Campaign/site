@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-// import { styles } from 'global';
 
-const Card = ({children, delay=0, width, dataSource}) => {
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
+
+import { styles, copy, cardSourceMap } from 'global';
+
+const Card = ({children, delay=0, width, cardKey, infoCallback}) => {
   const [isVisible, setIsVisible] = useState(false);
+  const dataSource = copy.dataSources[cardSourceMap[cardKey]];
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), delay);
@@ -13,7 +18,7 @@ const Card = ({children, delay=0, width, dataSource}) => {
   const cardStyle = `
     bg-white p-5 rounded-lg shadow-lg hover:shadow-xl
     transition-shadow duration-300 overflow-y-auto
-    mb-4
+    mb-4 relative
     ${isVisible ? 'opacity-100' : 'opacity-0'}
   `;
 
@@ -25,19 +30,30 @@ const Card = ({children, delay=0, width, dataSource}) => {
         width: width || '400px'
       }}
     >
+      {infoCallback && (
+        <div
+          onClick={() => infoCallback({cardKey})}
+          className={`absolute top-2 right-2 h-5 w-5 ${styles.clickable}`}
+        >
+          <InformationCircleIcon/>
+        </div>
+      )}
       <div>{children}</div>
       {dataSource && (
         <div className='border-t pt-3 mt-auto'>
-          {dataSource.link ? (
-            <div >
-              <div className='text-sm inline-block'>Data Source:</div>
+          {dataSource.baseUrl ? (
+            <div className='flex flex-row'>
+              <div className='text-sm'>Data Source:</div>
               <a
-                className='inline-block text-blue-500 hover:underline text-sm pl-1'
-                href={`https://${dataSource.link}`}
+                className='text-blue-500 hover:underline text-sm pl-1 flex flex-row'
+                href={`https://${dataSource.baseUrl}`}
                 rel='noopener noreferrer'
                 target='_blank'
               >
                 {dataSource.name}
+                <div className='ml-1 py-0.5 h-3.5 w-3.5 rounded-full'>
+                  <ArrowTopRightOnSquareIcon />
+                </div>
               </a>
             </div>
           ) : (
