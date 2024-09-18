@@ -13,10 +13,8 @@ const MemProfCard = ({entity: politician, delay, cardKey, infoCallback}) => {
     formatCurrency(assetLow) :
     `${formatCurrency(assetLow)} - ${formatCurrency(assetHigh)}`;
 
-  const props = {delay, cardKey, infoCallback};
-
   return (
-    <Card {...props}>
+    <Card {...{delay, cardKey, infoCallback}}>
       <p className='text-gray-700 mb-2 font-bold'>Assets owned by {fullName}:</p>
       <p className='text-gray-700 mb-2'>
         Estimated total holdings: {totalHoldingsString}

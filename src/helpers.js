@@ -12,3 +12,5 @@ export const extractBillVars = url => {
 
   return {congress, type, id};
 }
+
+export const nameToSlug = name => name.toLowerCase().replace(/\s+/g, '-');

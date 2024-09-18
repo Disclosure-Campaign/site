@@ -18,7 +18,6 @@ const BillCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   const {fullName, dataGroups} = politician;
   const bills = dataGroups[cardKey];
 
-
   const label = {
     'sponsoredLegislation': 'Legislation sponsored',
     'cosponsoredLegislation': 'Legislation co-sponsored'
@@ -62,10 +61,8 @@ const BillCard = ({entity: politician, delay, cardKey, infoCallback}) => {
 
   const visibleBills = filteredBills.slice(0, displayCount);
 
-  const props = {delay, cardKey, infoCallback};
-
   return (
-    <Card {...props}>
+    <Card {...{delay, cardKey, infoCallback}}>
       <p className='text-gray-700 mb-2 font-bold'>{label} by {fullName}:</p>
       {_.isEmpty(bills) ? (
         <p className='text-gray-700 mb-2'>

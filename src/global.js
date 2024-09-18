@@ -53,7 +53,9 @@ const cardSourceMap = {
     candContrib: 'openSecrets',
     bill: 'congressGov',
     summaries: 'congressGov',
-    sponsors: 'congressGov'
+    sponsors: 'congressGov',
+    org: 'openSecrets',
+    breakdown: 'openSecrets'
 };
 
 styles.primaryColorBg = `bg-${styles.primaryColor}`;

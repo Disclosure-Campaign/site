@@ -5,15 +5,13 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import Card from 'components/card';
 
-const nameToSlug = name => name.toLowerCase().replace(/\s+/g, '-');
+import { nameToSlug } from 'helpers';
 
 const LinksCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   const {
     fullName, bioguideId, opensecretsId,
     website, twitter, contactForm
   } = politician.dataGroups['bio'];
-
-  const props = {delay, cardKey, infoCallback};
 
   const slug = nameToSlug(fullName);
 
@@ -46,20 +44,21 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   ];
 
   return (
-    <Card {...props}>
+    <Card {...{delay, cardKey, infoCallback}}>
       <p className='mb-4'><strong>External Links:</strong></p>
       {_.map(_.filter(links, 'flag'), ({text, url}, index) => (
-        <div key={index} className='flex flex-row'>
+        <a
+          className='flex text-blue-500'
+          rel='noopener noreferrer'
+          target='_blank'
+          key={index}
+          href={url}
+        >
           <p className='mb-2 border-b'>{text}</p>
-          <a
-            className='ml-2 py-1 h-4 w-4 rounded-full text-blue-500'
-            rel='noopener noreferrer'
-            target='_blank'
-            href={url}
-          >
-            <ArrowTopRightOnSquareIcon />
-          </a>
-        </div>
+          <div className='ml-1 py-1 h-4 w-4 rounded-full'>
+            <ArrowTopRightOnSquareIcon/>
+          </div>
+        </a>
       ))}
 
     </Card>

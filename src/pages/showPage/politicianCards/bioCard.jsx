@@ -2,6 +2,8 @@ import React from 'react';
 
 import Card from 'components/card';
 
+import { styles } from 'global';
+
 const BioCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   const {fullName, dataGroups} = politician;
   const {depictionImageUrl, party, currentTitle} = dataGroups[cardKey];
@@ -13,7 +15,7 @@ const BioCard = ({entity: politician, delay, cardKey, infoCallback}) => {
       {depictionImageUrl ? (
         <div className='w-2/3 p-4'>
           <img
-            className='w-full h-auto object-contain'
+            className={`w-full h-auto object-contain ${styles.border}`}
             alt={`${fullName} depiction`}
             src={depictionImageUrl}
           />

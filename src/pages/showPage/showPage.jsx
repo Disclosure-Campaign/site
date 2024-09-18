@@ -18,6 +18,9 @@ import BillInfoCard from './billCards/billInfoCard';
 import SummariesCard from './billCards/summariesCard';
 import SponsorsCard from './billCards/sponsorsCard';
 
+import OrgCard from './orgCards/orgCard';
+import BreakdownCard from './orgCards/breakdownCard';
+
 import InfoPanel from 'components/infoPanel';
 import Loading from 'components/loading';
 
@@ -36,6 +39,10 @@ const cardMaps = {
     bill: BillInfoCard,
     summaries: SummariesCard,
     sponsors: SponsorsCard
+  },
+  org: {
+    org: OrgCard,
+    breakdown: BreakdownCard
   }
 };
 
@@ -52,6 +59,10 @@ const cardKeyMap = {
     'bill',
     'summaries',
     'sponsors'
+  ],
+  org: [
+    'org',
+    'breakdown'
   ]
 };
 
@@ -63,14 +74,14 @@ const columnMaps = {
   bill: [
     ['bill', 'sponsors'],
     ['summaries']
+  ],
+  org: [
+    ['org'],
+    ['breakdown']
   ]
 };
 
-const getDataKey = key => {
-  var dataKey = {links: 'bio', sponsors: 'bill'}[key];
-
-  return dataKey || key;
-}
+const getDataKey = key => ({breakdown: 'org', sponsors: 'bill', links: 'bio'}[key] || key);
 
 const ShowPage = ({entityType}) => {
   const dispatch = useDispatch();
@@ -78,12 +89,15 @@ const ShowPage = ({entityType}) => {
   const [infoParams, setInfoParams] = useState({});
 
   // politician
-  const {id, congress, type} = useParams();
+  const {id, congress, type, orgSlug} = useParams();
   const {keyedPoliticians} = useSelector(state => state.politicians);
   const politician = _.get(keyedPoliticians, id);
 
   // bill
   const [bill, setBill] = useState({});
+
+  // org
+  const [org, setOrg] = useState({});
 
   const cardMap = cardMaps[entityType];
   const cardKeys = cardKeyMap[entityType];
@@ -95,40 +109,70 @@ const ShowPage = ({entityType}) => {
 
   const memoizedRequestBillData = useCallback(async () => {
     return await api.requestData({
-      route: 'request_bill_data',
+      route: 'request_standard_data',
+      entity_type: 'bill',
       congress, type, id
     });
   }, [congress, type, id]);
+
+  const memoizedRequestOrgData = useCallback(async () => {
+    return await api.requestData({
+      route: 'request_standard_data',
+      entity_type: 'org',
+      org_slug: orgSlug
+    });
+  }, [orgSlug]);
 
   useEffect(() => {
     if (entityType === 'politician') {
       if (politician) {
         if (!politician.dataGroups) {
-          const setPoliticianDetails = () => {
-            memoizedAddPoliticianDetails(id);
+          try {
+            const setPoliticianDetails = () => {
+              memoizedAddPoliticianDetails(id);
+            }
+
+            setPoliticianDetails();
           }
-
-          setPoliticianDetails();
+          catch(error) {
+            setTimeout(() => setNotFound(true), 500);
+          }
         }
-      } else if (!_.isEmpty(keyedPoliticians)) {
-        setNotFound(true);
       }
-    }
-  }, [keyedPoliticians, id, politician, memoizedAddPoliticianDetails]);
-
-  useEffect(() => {
-    if (entityType === 'bill') {
-        const requestBillData = async () => {
+    } else if (entityType === 'bill') {
+      const requestBillData = async () => {
+        try {
           const bill = await memoizedRequestBillData();
 
           setBill({dataGroups: bill});
         }
+        catch (error) {
+          setTimeout(() => setNotFound(true), 500);
+        }
+      }
 
-        requestBillData();
+      requestBillData();
+    } else if (entityType === 'org') {
+      const requestOrgData = async () => {
+        try {
+          const org = await memoizedRequestOrgData();
+
+          setOrg({dataGroups: org});
+        }
+        catch (error) {
+          setTimeout(() => setNotFound(true), 500);
+        }
+      }
+
+      requestOrgData();
     }
-  }, [memoizedRequestBillData]);
-
-  setTimeout(() => setNotFound(true), 10000);
+  }, [
+      entityType, keyedPoliticians, politician,
+      id, congress, type, orgSlug,
+      memoizedAddPoliticianDetails,
+      memoizedRequestBillData,
+      memoizedRequestOrgData
+  ]);
 
   const cardsFromKeys = ({cardKeys, entity, infoCallback, index}) => {
     return _.map(_.filter(cardKeys, cardKey => getDataKey(cardKey) in entity.dataGroups), (cardKey, index2) => {
@@ -150,14 +194,16 @@ const ShowPage = ({entityType}) => {
     entity = politician;
   } else if (entityType === 'bill') {
     entity = bill;
+  } else if (entityType === 'org') {
+    entity = org;
   }
 
   return (
     !_.get(entity, 'dataGroups') ? (
       notFound ? (
-        <div>
-          <div>Malformed url - please return to the <Link to='/'>homepage</Link> and try a different search</div>
-          <div>If you came from the <Link to='/'>homepage</Link> or there is another error, please submit feedback on the <Link to='/contact'>contact page</Link></div>
+        <div className='flex flex-col justify-center items-center h-screen'>
+          <div>Internet connection issue or malformed url.</div>
+          <div>If you came from the <Link to='/' className='text-blue-500'>homepage</Link> or there is another error, please submit feedback on the <Link to='/contact' className='text-blue-500'>contact page</Link>.</div>
         </div>
       ) : (
         <Loading/>
