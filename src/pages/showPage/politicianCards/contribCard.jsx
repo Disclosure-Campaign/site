@@ -6,12 +6,12 @@ import Card from 'components/card';
 
 import { formatCurrency, nameToSlug } from 'helpers';
 
-const ContribCard = ({entity: politician, delay, cardKey, infoCallback}) => {
+const ContribCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
   const {fullName, dataGroups} = politician;
   const orgData = dataGroups[cardKey];
 
   return (
-    <Card {...{delay, cardKey, infoCallback}}>
+    <Card {...{delay, cardKey, infoCallback, focused}}>
       <p className='text-gray-700 mb-2 font-bold'>Top Contributors to {fullName}:</p>
       <table className='w-full border-collapse border-spacing-0'>
         <tbody>

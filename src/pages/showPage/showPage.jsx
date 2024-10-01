@@ -174,6 +174,10 @@ const ShowPage = ({entityType}) => {
       memoizedRequestOrgData
   ]);
 
+  const handleInfoParams = params => {
+    setInfoParams(infoParams.cardKey === params.cardKey ? {} : params);
+  }
+
   const cardsFromKeys = ({cardKeys, entity, infoCallback, index}) => {
     return _.map(_.filter(cardKeys, cardKey => getDataKey(cardKey) in entity.dataGroups), (cardKey, index2) => {
       var DataCard = cardMap[cardKey];
@@ -181,7 +185,10 @@ const ShowPage = ({entityType}) => {
 
       return (
         <DataCard
-          {...{entity, delay, cardKey, infoCallback}}
+          {...{
+            focused: infoParams.cardKey === cardKey,
+            entity, delay, cardKey, infoCallback
+          }}
           key={cardKey}
         />
       );
@@ -206,18 +213,18 @@ const ShowPage = ({entityType}) => {
           <div>If you came from the <Link to='/' className='text-blue-500'>homepage</Link> or there is another error, please submit feedback on the <Link to='/contact' className='text-blue-500'>contact page</Link>.</div>
         </div>
       ) : (
-        <Loading/>
+        <Loading fullScreen={true}/>
       )
     ) : (
       <div className='flex justify-center h-full p-4 pr-0 bg-gray-100'>
         <div className='flex justify-between gap-4 h-full overflow-y-auto'>
           {_.map(columns, (column, index) => (
             <div key={index} className='hidden md:block lg:block w-1/2'>
-              {cardsFromKeys({cardKeys: column, entity, infoCallback: setInfoParams, index})}
+              {cardsFromKeys({cardKeys: column, entity, infoCallback: handleInfoParams, index})}
             </div>
           ))}
           <div className='w-full block md:hidden lg:hidden '>
-            {cardsFromKeys({cardKeys, entity, infoCallback: setInfoParams})}
+            {cardsFromKeys({cardKeys, entity, infoCallback: handleInfoParams})}
           </div>
         </div>
         {!_.isEmpty(infoParams) && (

@@ -1,6 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 import _ from 'lodash';
 
 import { FixedSizeList } from 'react-window';
@@ -36,30 +38,24 @@ const presets = _.reduce(filterOptions, (result, {filterKey, preset}) => _.set(r
 
 const createNewFilter = () => ({...presets, id: _.uniqueId('filter_')});
 
-const SearchBar = () => {
+const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState('');
   const [selectedOption, setSelectedOption] = useState({});
   const [isAdvanced, setIsAdvanced] = useState(false);
   const [newFilter, setNewFilter] = useState(createNewFilter());
   const [filters, setFilters] = useState({});
-  const { sortedPoliticians } = useSelector(state => state.politicians);
-
-  var entities = sortedPoliticians || [];
-
-  const handleSearchChange = useMemo(() => _.debounce(e => {
-    setSearchTerm(e.target.value);
-  }, 500), []);
+  const { keyedZips } = useSelector(state => state.zips);
 
   const search = () => {
     var { type: searchType } = selectedOption;
 
     var id = selectedOption[idMap[searchType]];
 
-    dispatch(requestPoliticianDetails(id));
+    if (searchType === 'politician') {
+      dispatch(requestPoliticianDetails(id));
+    }
 
     var filterString = _.isEmpty(filters) ? '' : _.trimEnd(
       _.reduce(filters, (result, {operator, rela, type,  value}) => (
@@ -81,27 +77,26 @@ const SearchBar = () => {
 
   const removeFilter = id => setFilters(_.omit(filters, id));
 
-  const toggleSearchMode = () => setIsAdvanced(!isAdvanced);
+  // const toggleSearchMode = () => setIsAdvanced(!isAdvanced);
 
-  const handleKeyDown = e => {if (e.key === 'Enter') search()};
+  const handleKeyDown = e => {
+    if (e.key === 'Enter' && !_.isEmpty(selectedOption)) {
+      search()
+    }
+  };
 
-  var filteredEntities =
-    searchTerm === ''
-      ? entities
-      : _.filter(entities, ({fullName}) => (
-          fullName && _.includes(fullName.toLowerCase(), searchTerm.toLowerCase())
-      ));
+  console.log({keyedZips})
 
   const SearchOption = ({index, style}) => {
     var entity = filteredEntities[index];
 
     return (
       <ComboboxOption
-        key={entity.id}
-        value={entity}
         className={({focused}) => `cursor-pointer select-none relative py-2 pl-4 pr-4 ${
           focused ? 'bg-blue-600 text-white' : 'text-gray-900'
         }`}
+        key={entity.id}
+        value={entity}
         style={style}
       >
         {({focused}) => (
@@ -122,7 +117,7 @@ const SearchBar = () => {
       <div className='flex items-center w-full border rounded-md'>
         <Combobox value={_.get(selectedOption, 'fullName', '')} onChange={setSelectedOption}>
           <ComboboxInput
-            placeholder='Search for a politician or organization...'
+            placeholder={`Search for a politician using name or zipcode...`}
             className='p-2 w-full focus:outline-none'
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
@@ -183,8 +178,8 @@ const SearchBar = () => {
           <div className='flex flex-wrap space-between space-x-2'>
             {_.map(filters, ({operator, type, rela, value}, key) => (
               <div
-                key={key}
                 className='bg-blue-200 text-blue-700 px-4 py-2 rounded-full flex items-center space-x-2'
+                key={key}
               >
                 <span>{`${operator} ${type} ${rela} ${value}`}</span>
                 <button

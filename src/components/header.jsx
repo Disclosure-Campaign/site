@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 
-import { Bars3Icon } from '@heroicons/react/24/solid';
+import { Bars3Icon, ArrowLeftCircleIcon } from '@heroicons/react/24/solid';
 import logoWhite from 'assets/images/logoWhite.svg';
+
+import Button from 'components/button';
 
 import { copy, styles } from 'global';
 
@@ -14,10 +16,14 @@ const menuLinks = [
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  var {pathname, key} = useLocation();
+  var showBackButton = pathname !== '/' || key !== 'default';
+
+  const handleBackClick = () => navigate(key === 'default' ? '/' : -1);
 
   return (
     <header className={`text-white p-4 h-16 relative bg-emerald-600 ${styles.primaryColorBg}`}>
@@ -47,6 +53,13 @@ const Header = () => {
           )}
         </nav>
       )}
+      {showBackButton && <div className={`z-10 absolute top-20`}>
+        <Button {...{
+          addStyles: `h-20 w-20 text-emerald-600 hover:text-emerald-500`,
+          Icon: ArrowLeftCircleIcon,
+          onClick: handleBackClick,
+        }}/>
+      </div>}
     </header>
   );
 };

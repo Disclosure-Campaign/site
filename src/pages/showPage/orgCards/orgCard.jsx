@@ -6,11 +6,11 @@ import Card from 'components/card';
 
 import { formatCurrency, nameToSlug } from 'helpers';
 
-const OrgCard = ({entity: org, delay, cardKey, infoCallback}) => {
+const OrgCard = ({entity: org, delay, cardKey, infoCallback, focused}) => {
   const {orgname: orgName, orgid: orgId, total} = org.dataGroups[cardKey];
 
   return (
-    <Card {...{delay, cardKey, infoCallback}}>
+    <Card {...{delay, cardKey, infoCallback, focused}}>
       <p className='mb-2'><strong>{orgName}</strong></p>
       <p className='mb-2'>Total contributions: {formatCurrency(total)}</p>
       <div className='flex'>

@@ -9,7 +9,7 @@ import Card from 'components/card';
 import { extractBillVars } from 'helpers';
 import { styles } from 'global';
 
-const BillCard = ({entity: politician, delay, cardKey, infoCallback}) => {
+const BillCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
   const [displayCount, setDisplayCount] = useState(5);
   // const [sortOrder, setSortOrder] = useState('desc');
   const [selectedSubject, setSelectedSubject] = useState('');
@@ -62,7 +62,7 @@ const BillCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   const visibleBills = filteredBills.slice(0, displayCount);
 
   return (
-    <Card {...{delay, cardKey, infoCallback}}>
+    <Card {...{delay, cardKey, infoCallback, focused}}>
       <p className='text-gray-700 mb-2 font-bold'>{label} by {fullName}:</p>
       {_.isEmpty(bills) ? (
         <p className='text-gray-700 mb-2'>

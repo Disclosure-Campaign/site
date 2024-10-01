@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import api from 'api';
-import { addPoliticians } from './redux/actions';
+import { addPoliticians, addZips } from './redux/actions';
 
 import RoutesComponent from './components/routes';
 import Header from './components/header';
@@ -16,21 +16,29 @@ const App = () => {
     dispatch(addPoliticians(data));
   }, [dispatch]);
 
+  const memoizedAddZips = useCallback(data => {
+    dispatch(addZips(data));
+  }, [dispatch]);
+
   useEffect(() => {
     if (hasFetched.current) {
       const setEntities = async () => {
-        const {keyedPoliticians, sortedPoliticians} = await api.requestData({
+        const {
+          keyedPoliticians, sortedPoliticians,
+          zipList, keyedZips
+        } = await api.requestData({
           route: 'request_searchable_entities'
         });
 
         memoizedAddPoliticians({keyedPoliticians, sortedPoliticians});
+        memoizedAddZips({zipList, keyedZips});
       }
 
       setEntities()
     } else {
       hasFetched.current = true;
     }
-  }, [memoizedAddPoliticians]);
+  }, [memoizedAddPoliticians, memoizedAddZips]);
 
   return (
     <Router>

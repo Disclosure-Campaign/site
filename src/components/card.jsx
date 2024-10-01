@@ -5,7 +5,7 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import { styles, copy, cardSourceMap } from 'global';
 
-const Card = ({children, delay=0, width, cardKey, infoCallback}) => {
+const Card = ({children, delay=0, width, cardKey, infoCallback, focused}) => {
   const [isVisible, setIsVisible] = useState(false);
   const dataSource = copy.dataSources[cardSourceMap[cardKey]];
 
@@ -20,6 +20,7 @@ const Card = ({children, delay=0, width, cardKey, infoCallback}) => {
     transition-shadow duration-300 overflow-y-auto
     mb-4 relative
     ${isVisible ? 'opacity-100' : 'opacity-0'}
+    ${focused ? `border-2 border-${styles.primaryColor}` : ''}
   `;
 
   return (

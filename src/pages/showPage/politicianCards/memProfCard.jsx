@@ -5,7 +5,7 @@ import Card from 'components/card';
 
 import { formatCurrency } from 'helpers';
 
-const MemProfCard = ({entity: politician, delay, cardKey, infoCallback}) => {
+const MemProfCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
   const {fullName, dataGroups} = politician;
   const {assetLow, assetHigh, assets} = dataGroups[cardKey];
 
@@ -14,7 +14,7 @@ const MemProfCard = ({entity: politician, delay, cardKey, infoCallback}) => {
     `${formatCurrency(assetLow)} - ${formatCurrency(assetHigh)}`;
 
   return (
-    <Card {...{delay, cardKey, infoCallback}}>
+    <Card {...{delay, cardKey, infoCallback, focused}}>
       <p className='text-gray-700 mb-2 font-bold'>Assets owned by {fullName}:</p>
       <p className='text-gray-700 mb-2'>
         Estimated total holdings: {totalHoldingsString}

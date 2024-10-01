@@ -7,15 +7,18 @@ const cardIntros = {
     `Basic information about ${entity.fullName} from ${dataSource.name}.`
   ),
   candContrib: ({entity, dataSource}) => (
-    `Basic information about ${entity.fullName} from ${dataSource.name}.`
+    `Organizations that have spent the most money supporting ${entity.fullName}. From ${dataSource.name}.`
   ),
   memProf: ({entity, dataSource}) => (
-    `Basic information about ${entity.fullName} from ${dataSource.name}.`
+    `Information from ${dataSource.name} about assets owned by ${entity.fullName}.`
   ),
   sponsoredLegislation: ({entity, dataSource}) => (
-    `Basic information about ${entity.fullName} from ${dataSource.name}.`
+    `Searchable list of bills sponsored by ${entity.fullName}. Press 'view bill' to see more information on this site. From ${dataSource.name}.`
   ),
   cosponsoredLegislation: ({entity, dataSource}) => (
+    `Basic information about ${entity.fullName} from ${dataSource.name}.`
+  ),
+  links: ({entity, dataSource}) => (
     `Basic information about ${entity.fullName} from ${dataSource.name}.`
   )
 };

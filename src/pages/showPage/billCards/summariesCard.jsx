@@ -3,13 +3,11 @@ import _ from 'lodash';
 
 import Card from 'components/card';
 
-const SummariesCard = ({entity: bill, delay, cardKey, infoCallback}) => {
+const SummariesCard = ({entity: bill, delay, cardKey, infoCallback, focused}) => {
   const summaries = bill.dataGroups[cardKey];
 
-  const props = {delay, cardKey, infoCallback};
-
   return (
-    <Card {...props}>
+    <Card {...{delay, cardKey, infoCallback, focused}}>
       <p className='mb-2 font-bold'>Summaries:</p>
       {_.isEmpty(summaries) ? (
         <p className=''>

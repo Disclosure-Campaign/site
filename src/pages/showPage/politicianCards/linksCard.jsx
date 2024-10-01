@@ -7,7 +7,7 @@ import Card from 'components/card';
 
 import { nameToSlug } from 'helpers';
 
-const LinksCard = ({entity: politician, delay, cardKey, infoCallback}) => {
+const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
   const {
     fullName, bioguideId, opensecretsId,
     website, twitter, contactForm
@@ -44,7 +44,7 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback}) => {
   ];
 
   return (
-    <Card {...{delay, cardKey, infoCallback}}>
+    <Card {...{delay, cardKey, infoCallback, focused}}>
       <p className='mb-4'><strong>External Links:</strong></p>
       {_.map(_.filter(links, 'flag'), ({text, url}, index) => (
         <a

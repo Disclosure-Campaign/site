@@ -40,8 +40,7 @@ export const politiciansSlice = createSlice({
   name: 'politicians',
   initialState: {
     keyedPoliticians: {},
-    sortedPoliticians: [],
-    loading: {}
+    sortedPoliticians: []
   },
   reducers: {
     addPoliticians: (state, action) => {

@@ -6,23 +6,30 @@ const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
     ` bg-gray-500`
   );
 
-  var buttonStyles = Icon ? styles.icon : styles.button;
+  var buttonStyles = styles.button;
+  var iconStyles = styles.icon;
 
-  if (disabled) buttonStyles += disabledStyles;
+  if (addStyles) {
+    buttonStyles += ` ${addStyles}`;
+    iconStyles += ` ${addStyles}`;
+  }
 
-  buttonStyles += ` ${addStyles}`;
+  if (disabled) {
+    buttonStyles += disabledStyles;
+    iconStyles += disabledStyles;
+  }
+
+  iconStyles = `flex items-center justify-center h-10 w-10 rounded-full ${iconStyles}`;
 
   return (
     <button
+      className={buttonStyles}
+      disabled={disabled}
       aria-label={aria}
       onClick={onClick}
-      disabled={disabled}
-      className={buttonStyles}
     >
       {Icon ? (
-        <div className="flex items-center justify-center h-5 w-5 rounded-full">
-          <Icon />
-        </div>
+        <div className={iconStyles}><Icon/></div>
       ) : (
         <div>{text}</div>
       )}
