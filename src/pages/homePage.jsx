@@ -9,9 +9,10 @@ import SuggestionBox from 'components/suggestionBox';
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { sortedPoliticians } = useSelector(state => state.politicians);
+  const { keyedZips } = useSelector(state => state.zips);
 
-  const handleSearchChange = useMemo(() => _.debounce(e => {
-    setSearchTerm(e.target.value);
+  const handleSearchChange = useMemo(() => _.debounce(searchTerm => {
+    setSearchTerm(searchTerm);
   }, 1000), []);
 
   var entities = sortedPoliticians || [];
@@ -20,11 +21,20 @@ const Home = () => {
     searchTerm === ''
       ? entities
       : _.filter(entities, ({fullName, candidateOfficeState, candidateOfficeDistrict}) => {
-        console.log({candidateOfficeState, candidateOfficeDistrict})
+        var match = false;
 
-        var match = isNaN(searchTerm) ?
-          _.includes((fullName || '').toLowerCase(), searchTerm.toLowerCase()) :
-          _.includes('f', 'g');
+        if ((!isNaN(searchTerm)) && (searchTerm.length === 5)) {
+          var possibleMatches = keyedZips[searchTerm];
+
+          _.forEach(possibleMatches, ({state, district}) => {
+            if ((candidateOfficeState === state) && (candidateOfficeDistrict === district)) {
+              match = true;
+            }
+          });
+
+        } else {
+          match = _.includes((fullName || '').toLowerCase(), searchTerm.toLowerCase());
+        }
 
         return match;
       });

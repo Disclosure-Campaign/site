@@ -81,7 +81,11 @@ const columnMaps = {
   ]
 };
 
-const getDataKey = key => ({breakdown: 'org', sponsors: 'bill', links: 'bio'}[key] || key);
+const showCard = ({entity, cardKey: key}) => (
+  (({breakdown: 'org', sponsors: 'bill'}[key] || key)) in entity.dataGroups ||
+  _.includes(['bio', 'links'], key)
+);
+
 
 const ShowPage = ({entityType}) => {
   const dispatch = useDispatch();
@@ -179,7 +183,7 @@ const ShowPage = ({entityType}) => {
   }
 
   const cardsFromKeys = ({cardKeys, entity, infoCallback, index}) => {
-    return _.map(_.filter(cardKeys, cardKey => getDataKey(cardKey) in entity.dataGroups), (cardKey, index2) => {
+    return _.map(_.filter(cardKeys, cardKey => showCard({cardKey, entity})), (cardKey, index2) => {
       var DataCard = cardMap[cardKey];
       var delay = 200 + index2 * 200 + index * 400;
 

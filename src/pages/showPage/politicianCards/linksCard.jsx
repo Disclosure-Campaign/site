@@ -11,7 +11,7 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
   const {
     fullName, bioguideId, opensecretsId,
     website, twitter, contactForm
-  } = politician.dataGroups['bio'];
+  } = _.extend(politician, politician.dataGroups['bio']);
 
   const slug = nameToSlug(fullName);
 

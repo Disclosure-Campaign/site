@@ -82,12 +82,10 @@ flex items-center
 
 `.replace(/(\r\n|\n|\r)/gm, ' ');
 
-styles.icon = `
-
-text-blue-500
-hover:text-blue-600
-
-`.replace(/(\r\n|\n|\r)/gm, ' ');
+const menuLinks = [
+    {text: 'About', url: 'about'},
+    {text: 'Contact', url: 'contact'}
+];
 
 const states = {
     'US': 'Federal',
@@ -152,4 +150,4 @@ const states = {
     'WY': 'Wyoming'
 }
 
-export { copy, styles, cardSourceMap, states };
+export { copy, styles, cardSourceMap, states, menuLinks };

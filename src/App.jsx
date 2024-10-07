@@ -7,6 +7,7 @@ import { addPoliticians, addZips } from './redux/actions';
 
 import RoutesComponent from './components/routes';
 import Header from './components/header';
+import Footer from './components/footer';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -44,9 +45,10 @@ const App = () => {
     <Router>
       <div className='w-screen h-screen'>
         <Header/>
-        <main className='w-screen h-[92vh]'>
+        <main className='w-screen h-[88vh] bg-gray-100'>
           <RoutesComponent/>
         </main>
+        <Footer/>
       </div>
     </Router>
   );

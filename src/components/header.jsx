@@ -7,12 +7,7 @@ import logoWhite from 'assets/images/logoWhite.svg';
 
 import Button from 'components/button';
 
-import { copy, styles } from 'global';
-
-const menuLinks = [
-  {name: 'About', key: 'about'},
-  {name: 'Contact', key: 'contact'}
-];
+import { copy, styles, menuLinks } from 'global';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,8 +28,8 @@ const Header = () => {
           <img src={logoWhite} alt='Home Logo' className='w-20'/>
         </Link>
         <div className='hidden md:flex space-x-4 text-nowrap font-bold absolute top-1 right-0'>
-          {_.map(menuLinks, ({name, key}) =>
-            <Link to={'/' + key} key={key} className='font-bold hover:text-gray-300'>{name}</Link>
+          {_.map(menuLinks, ({text, url}) =>
+            <Link to={'/' + url} key={url} className='font-bold hover:text-gray-300'>{text}</Link>
           )}
         </div>
         <button
@@ -48,12 +43,12 @@ const Header = () => {
       </div>
       {isMenuOpen && (
         <nav className={`md:hidden flex flex-col items-center p-4 space-y-2 mt-2 z-10 absolute right-0 top-14 rounded-bl-md ${styles.primaryColorBg}`}>
-          {_.map(menuLinks, ({name, key}) =>
-            <Link to={'/' + key} key={key} className='hover:text-gray-300 text-right' onClick={toggleMenu}>{name}</Link>
+          {_.map(menuLinks, ({text, url}) =>
+            <Link to={'/' + url} key={url} className='hover:text-gray-300 text-right' onClick={toggleMenu}>{text}</Link>
           )}
         </nav>
       )}
-      {showBackButton && <div className={`z-10 absolute top-20`}>
+      {showBackButton && <div className={`z-10 absolute top-20 max-sm:hidden`}>
         <Button {...{
           addStyles: `h-20 w-20 text-emerald-600 hover:text-emerald-500`,
           Icon: ArrowLeftCircleIcon,

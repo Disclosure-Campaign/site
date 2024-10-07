@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import _ from 'lodash';
 
@@ -46,7 +45,6 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
   const [isAdvanced, setIsAdvanced] = useState(false);
   const [newFilter, setNewFilter] = useState(createNewFilter());
   const [filters, setFilters] = useState({});
-  const { keyedZips } = useSelector(state => state.zips);
 
   const search = () => {
     var { type: searchType } = selectedOption;
@@ -79,13 +77,18 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
 
   // const toggleSearchMode = () => setIsAdvanced(!isAdvanced);
 
+  const handleInputChange = option => {
+    if (!_.isEmpty(option)) {
+      handleSearchChange(option.fullName);
+      setSelectedOption(option);
+    }
+  }
+
   const handleKeyDown = e => {
     if (e.key === 'Enter' && !_.isEmpty(selectedOption)) {
-      search()
+      search();
     }
   };
-
-  console.log({keyedZips})
 
   const SearchOption = ({index, style}) => {
     var entity = filteredEntities[index];
@@ -115,11 +118,11 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
   return (
     <div className='relative flex flex-col items-center border rounded-md p-4 space-y-4 w-full max-w-3xl mx-auto'>
       <div className='flex items-center w-full border rounded-md'>
-        <Combobox value={_.get(selectedOption, 'fullName', '')} onChange={setSelectedOption}>
+        <Combobox value={searchTerm} onChange={handleInputChange}>
           <ComboboxInput
             placeholder={`Search for a politician using name or zipcode...`}
+            onChange={e => handleSearchChange(e.target.value)}
             className='p-2 w-full focus:outline-none'
-            onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
           />
           <ComboboxOptions anchor='bottom start' className='bg-white shadow-lg max-h-60 rounded-md py-1 text-sm ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none'>

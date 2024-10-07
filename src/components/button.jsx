@@ -7,7 +7,7 @@ const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
   );
 
   var buttonStyles = styles.button;
-  var iconStyles = styles.icon;
+  var iconStyles = `flex items-center justify-center h-10 w-10 rounded-full ${!disabled && 'text-blue-500 hover:text-blue-600'}`;
 
   if (addStyles) {
     buttonStyles += ` ${addStyles}`;
@@ -19,8 +19,6 @@ const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
     iconStyles += disabledStyles;
   }
 
-  iconStyles = `flex items-center justify-center h-10 w-10 rounded-full ${iconStyles}`;
-
   return (
     <button
       className={buttonStyles}
@@ -29,7 +27,9 @@ const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
       onClick={onClick}
     >
       {Icon ? (
-        <div className={iconStyles}><Icon/></div>
+        <div className={iconStyles}>
+          <Icon />
+        </div>
       ) : (
         <div>{text}</div>
       )}
