@@ -24,7 +24,7 @@ const Header = () => {
     <header className={`text-white p-4 h-16 relative bg-emerald-600 ${styles.primaryColorBg}`}>
       <div className={`container mx-auto relative`}>
         <Link to='/' className='text-lg font-bold absolute top-0 hover:text-gray-300'>{copy.siteName}</Link>
-        <Link to='/' className='absolute left-1/2 transform -translate-x-1/2'>
+        <Link to='/' className='max-sm:hidden absolute left-1/2 transform -translate-x-1/2'>
           <img src={logoWhite} alt='Home Logo' className='w-20'/>
         </Link>
         <div className='hidden md:flex space-x-4 text-nowrap font-bold absolute top-1 right-0'>
@@ -33,7 +33,7 @@ const Header = () => {
           )}
         </div>
         <button
-          className='md:hidden text-white focus:outline-none absolute top-1 right-0'
+          className='md:hidden text-white focus:outline-none absolute right-0'
           onClick={toggleMenu}
         >
           <div className={`h-8 w-8`}>

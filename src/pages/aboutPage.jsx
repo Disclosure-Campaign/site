@@ -1,7 +1,9 @@
 import React from 'react';
+import TextPage from 'components/textPage';
+import aboutText from 'static/aboutText';
 
-const About = () => {
-  return <h2>About Page</h2>;
-};
+const About = () => (
+  <TextPage uninterpolatedText={aboutText}/>
+);
 
 export default About;

@@ -1,6 +1,6 @@
 const copy = {
     siteName: 'Disclosure Campaign',
-    introText: 'Disclosure Campaign is a site to research money in politics',
+    introText: 'Disclosure Campaign - uncover how elections can be bought',
     dataSources: {
         congressGov: {
             name: 'Congress.gov',
@@ -29,7 +29,13 @@ const copy = {
                 a more vibrant, representative and accountable democracy."
             `
         }
-    }
+    },
+    contactText:
+`
+If you are interested in contributing to this project, offering substantive critiques or suggestions for it, or supporting it in another way, please email me at ((info@disclosurecampaign.org|||mailto:info@disclosurecampaign.org)).
+\n\n
+I'm also looking for new employment opportunities, especially working on campaign finance reform or criminal justice reform.
+`
 };
 
 const styles = {
@@ -79,6 +85,7 @@ ${styles.text}
 ${styles.lighterPrimaryColorText}
 hover:${styles.primaryColorText}
 flex items-center
+z-20
 
 `.replace(/(\r\n|\n|\r)/gm, ' ');
 

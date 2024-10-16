@@ -7,8 +7,7 @@ import Card from 'components/card';
 import Loading from 'components/loading';
 
 const SponsorsCard = ({entity: bill, delay, cardKey, infoCallback, focused}) => {
-  const {keyedPoliticians} = useSelector(state => state.politicians);
-
+  const { keyedPoliticians } = useSelector(state => state.politicians);
   const sponsors = _.map(_.get(bill, 'dataGroups.bill.sponsors', []), ({bioguideId}) => _.find(keyedPoliticians, {bioguideId}));
 
   return (
@@ -16,10 +15,11 @@ const SponsorsCard = ({entity: bill, delay, cardKey, infoCallback, focused}) => 
       <Card {...{delay, cardKey, infoCallback, focused}}>
         <p className='mb-2 font-bold'>Sponsors:</p>
         {_.map(sponsors, ({fecId1, fullName, party}) => (
-          <Link to={`/politician/${fecId1}`} className='flex flex-row text-blue-500'>
+          <Link to={`/politician/${fecId1}`} key={fecId1} className='flex flex-row text-blue-500'>
             {fullName} ({party})
           </Link>
         ))}
+        <div className='mb-2'/>
       </Card>
     ) : (
       <Loading/>

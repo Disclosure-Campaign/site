@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 const api = {
   requestData: async params => {
@@ -6,13 +7,16 @@ const api = {
 
     try {
       var response = await axios.get(`/${params.route}`, {params});
-      console.log(response.data);
 
-      result = response.data;
+      if (_.get(response, 'data')) {
+        result = response.data;
+      } else {
+        result = null;
+      }
     } catch (error) {
       console.error('There was a problem with the request:', error);
 
-      result = error
+      result = null;
     }
 
     return result;

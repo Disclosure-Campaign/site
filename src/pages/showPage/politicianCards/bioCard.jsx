@@ -8,22 +8,9 @@ import { UserIcon } from '@heroicons/react/24/outline';
 import { styles } from 'global';
 
 const BioCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
-  politician = _.extend(politician, _.get(politician, 'dataGroups.bio'));
+  politician = _.extend(_.get(politician, 'dataGroups.bio'), politician);
 
-var {
-    fullName, party, currentTitle,
-    depictionImageUrl,
-    candidateOfficeDistrict: district,
-    candidateOfficeState: state,
-    candidateOffice: office
-  } = politician;
-
-
-  if (!currentTitle) {
-    currentTitle = `Candidate for ${state} ${office === 'S' ? 'Senator' : `Representative (District ${district})`}`;
-  } else if (district !== '00') {
-    currentTitle += ` (District ${district})`;
-  }
+  const { fullName, party, currentTitle, depictionImageUrl } = politician;
 
   return (
     <Card {...{delay, cardKey, infoCallback, focused}}>

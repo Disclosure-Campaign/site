@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import _ from 'lodash';
@@ -52,7 +52,10 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
     var id = selectedOption[idMap[searchType]];
 
     if (searchType === 'politician') {
-      dispatch(requestPoliticianDetails(id));
+      dispatch(requestPoliticianDetails({
+        politicianIds: [id],
+        onlyBio: false
+      }));
     }
 
     var filterString = _.isEmpty(filters) ? '' : _.trimEnd(
@@ -120,7 +123,7 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
       <div className='flex items-center w-full border rounded-md'>
         <Combobox value={searchTerm} onChange={handleInputChange}>
           <ComboboxInput
-            placeholder={`Search for a politician using name or zipcode...`}
+            placeholder={`Search politicians by name or zipcode...`}
             onChange={e => handleSearchChange(e.target.value)}
             className='p-2 w-full focus:outline-none'
             onKeyDown={handleKeyDown}

@@ -9,6 +9,7 @@ import api from 'api';
 import { requestPoliticianDetails } from '../../redux/actions';
 
 import BioCard from './politicianCards/bioCard';
+import PresidentialCard from './politicianCards/presidentialCard';
 import BillCard from './politicianCards/billCard';
 import MemProfCard from './politicianCards/memProfCard';
 import ContribCard from './politicianCards/contribCard';
@@ -29,6 +30,7 @@ import Loading from 'components/loading';
 const cardMaps = {
   politician: {
     bio: BioCard,
+    presidential: PresidentialCard,
     sponsoredLegislation: BillCard,
     cosponsoredLegislation: BillCard,
     memProf: MemProfCard,
@@ -49,6 +51,7 @@ const cardMaps = {
 const cardKeyMap = {
   politician: [
     'bio',
+    'presidential',
     'candContrib',
     'memProf',
     'links',
@@ -68,7 +71,7 @@ const cardKeyMap = {
 
 const columnMaps = {
   politician: [
-    ['bio', 'sponsoredLegislation'],
+    ['bio', 'presidential', 'sponsoredLegislation'],
     ['candContrib', 'memProf', 'links', 'cosponsoredLegislation']
   ],
   bill: [
@@ -82,10 +85,10 @@ const columnMaps = {
 };
 
 const showCard = ({entity, cardKey: key}) => (
-  (({breakdown: 'org', sponsors: 'bill'}[key] || key)) in entity.dataGroups ||
-  _.includes(['bio', 'links'], key)
+  ((({breakdown: 'org', sponsors: 'bill'}[key] || key)) in entity.dataGroups) ||
+  _.includes(['bio', 'links'], key) ||
+  (key === 'presidential' && _.includes(['P00009423', 'P80001571', 'P80000722'], entity.fecId1))
 );
-
 
 const ShowPage = ({entityType}) => {
   const dispatch = useDispatch();
@@ -108,7 +111,10 @@ const ShowPage = ({entityType}) => {
   const columns = columnMaps[entityType];
 
   const memoizedAddPoliticianDetails = useCallback(id => {
-    dispatch(requestPoliticianDetails(id));
+    dispatch(requestPoliticianDetails({
+      politicianIds: [id],
+      onlyBio: false
+    }));
   }, [dispatch]);
 
   const memoizedRequestBillData = useCallback(async () => {
@@ -130,17 +136,15 @@ const ShowPage = ({entityType}) => {
   useEffect(() => {
     if (entityType === 'politician') {
       if (politician) {
-        if (!politician.dataGroups) {
-          try {
-            const setPoliticianDetails = () => {
-              memoizedAddPoliticianDetails(id);
-            }
+        try {
+          const setPoliticianDetails = () => {
+            memoizedAddPoliticianDetails(id);
+          }
 
-            setPoliticianDetails();
-          }
-          catch(error) {
-            setTimeout(() => setNotFound(true), 500);
-          }
+          setPoliticianDetails();
+        }
+        catch(error) {
+          setTimeout(() => setNotFound(true), 500);
         }
       }
     } else if (entityType === 'bill') {
@@ -167,6 +171,8 @@ const ShowPage = ({entityType}) => {
           setTimeout(() => setNotFound(true), 500);
         }
       }
+
+      setTimeout(() => setNotFound(true), 10000);
 
       requestOrgData();
     }
@@ -210,7 +216,7 @@ const ShowPage = ({entityType}) => {
   }
 
   return (
-    !_.get(entity, 'dataGroups') ? (
+    !_.get(entity, 'dataGroups') || _.get(entity, 'onlyBio') ? (
       notFound ? (
         <div className='flex flex-col justify-center items-center h-screen'>
           <div>Internet connection issue or malformed url.</div>

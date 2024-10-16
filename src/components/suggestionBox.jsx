@@ -1,16 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import _ from 'lodash';
+
+import { requestPoliticianDetails } from '../redux/actions';
 
 import MiniCard from 'components/miniCard';
 
 const SuggestionBox = ({searchTerm, filteredEntities}) => {
+  const dispatch = useDispatch();
   const [visibleSuggestionIds, setVisibleSuggestionIds] = useState([]);
+  const [notFound, setNotFound] = useState(false);
+
+  const memoizedAddPoliticianDetails = useCallback(ids => {
+    dispatch(requestPoliticianDetails({
+      politicianIds: ids,
+      onlyBio: true
+    }));
+  }, [dispatch]);
 
   useEffect(() => {
     var ids = [];
 
     if (!searchTerm) {
       ids = _.slice(_.shuffle([
+        'P80001571', // Trump
+        'P00009423', // Harris
         'H6LA04138', // Mike Johnson
         'H8CA05035', // Nancy Pelosi
         'H0CA27085', // Adam Schiff
@@ -31,19 +45,29 @@ const SuggestionBox = ({searchTerm, filteredEntities}) => {
     } else {
       ids = _.map(_.sortBy(filteredEntities, 'bioguideId'), 'fecId1');
 
-      if (ids.length > 8) {
-        ids = _.slice(ids, 0, 8);
+      if (ids.length > 8) ids = _.slice(ids, 0, 8);
+    }
+
+    if (!_.isEmpty(ids)) {
+      try {
+        const setPoliticianDetails = () => {
+          memoizedAddPoliticianDetails(ids);
+        }
+
+        setPoliticianDetails();
+      } catch(error) {
+        setTimeout(() => setNotFound(true), 500);
       }
     }
 
     setVisibleSuggestionIds(ids);
-  }, [filteredEntities]);
+  }, [memoizedAddPoliticianDetails, filteredEntities, searchTerm]);
 
   const containerStyles = `
-    text-nowrap w-full max-w-3xl mt-10 p-2
+    text-nowrap w-full max-w-3xl mt-10 p-1
     bg-white border border-gray-300 rounded-lg
-    overflow-x-auto overflow-hidden h-72
-    transition-all
+    overflow-x-auto overflow-hidden h-70
+    transition-all max-sm:flex max-sm:align-center
     ${visibleSuggestionIds.length > 4 ? 'scrollable' : ''}
   `;
 

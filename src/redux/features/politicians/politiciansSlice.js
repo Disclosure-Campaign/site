@@ -7,25 +7,35 @@ var loading = {};
 
 const requestPoliticianDetails = createAsyncThunk(
   'politicians/requestPoliticianDetails',
-  async (politicianId, { getState, rejectWithValue }) => {
+  async ({politicianIds, onlyBio}, { getState, rejectWithValue }) => {
     var { keyedPoliticians } = getState().politicians;
-    const existingData = keyedPoliticians[politicianId].dataGroups;
-    const isLoading = loading[politicianId];
-
     var result;
 
-    if (existingData) {
-      result = existingData;
-    } else if (isLoading) {
-      result = rejectWithValue('Data is already being fetched.');
-    } else {
-      loading[politicianId] = true;
+    var ids = _.filter(politicianIds, politicianId => {
+      var flag = true;
 
+      var isLoading = loading[politicianId];
+      var hasBio = onlyBio && keyedPoliticians[politicianId].dataGroups;
+      var hasAllData = _.get(keyedPoliticians[politicianId].dataGroups, 'memProf');
+
+      if (isLoading || hasBio || hasAllData) {
+        flag = false;
+      } else {
+        loading[politicianId] = true;
+      }
+
+      return flag;
+    });
+
+    if (_.isEmpty(ids)) {
+      result = rejectWithValue('Data is already present or being fetched.');
+    } else {
       try {
         result = await api.requestData({
           route: 'request_standard_data',
           entity_type: 'politician',
-          id: politicianId
+          ids: ids.sort().join('-'),
+          onlyBio
         });
       } catch (error) {
         result = rejectWithValue(error.message);
@@ -68,13 +78,19 @@ export const politiciansSlice = createSlice({
         // state.loading[politicianId] = true;
       })
       .addCase(requestPoliticianDetails.fulfilled, (state, action) => {
-        const politicianId = action.meta.arg;
-        state.keyedPoliticians[politicianId].dataGroups = action.payload;
-        delete loading[politicianId];
+        const { politicianIds, onlyBio } = action.meta.arg;
+
+        _.forEach(politicianIds, politicianId => {
+          var politician = state.keyedPoliticians[politicianId];
+
+          politician.onlyBio = onlyBio;
+          politician.dataGroups = action.payload[politicianId];
+          delete loading[politicianId];
+        });
       })
       .addCase(requestPoliticianDetails.rejected, (state, action) => {
-        const politicianId = action.meta.arg;
-        delete loading[politicianId];
+        const { politicianIds } = action.meta.arg;
+        _.forEach(politicianIds, politicianId => delete loading[politicianId]);
         state.error = action.payload;
       });
   }

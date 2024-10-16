@@ -9,11 +9,16 @@ import { nameToSlug } from 'helpers';
 
 const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
   const {
-    fullName, bioguideId, opensecretsId,
-    website, twitter, contactForm
-  } = _.extend(politician, politician.dataGroups['bio']);
+    fullName, bioguideId, opensecretsId, fecId1,
+    website, twitter, contactForm, facebook
+  } = _.extend(politician.dataGroups['bio'], politician);
 
   const slug = nameToSlug(fullName);
+
+  const opensecretsUrl = _.includes(['P00009423', 'P80001571', 'P80000722'], fecId1) ?
+    `https://www.opensecrets.org/2024-presidential-race/${slug}/candidate?id=${opensecretsId}` :
+    `https://www.opensecrets.org/members-of-congress/${slug}/summary?cid=${opensecretsId}`
+  ;
 
   const links = [
     {
@@ -23,13 +28,13 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
     },
     {
       flag: opensecretsId,
-      url: `https://www.opensecrets.org/members-of-congress/${slug}/summary?cid=${opensecretsId}`,
+      url: opensecretsUrl,
       text: `Page for ${fullName} on OpenSecrets`
     },
     {
       flag: website,
       url: `${website}`,
-      text: `${fullName}'s website`
+      text: `${fullName}'s official website`
     },
     {
       flag: contactForm,
@@ -39,8 +44,13 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
     {
       flag: twitter,
       url: `https://x.com/${twitter}`,
-      text: `${fullName}'s twitter page`
+      text: `${fullName}'s Twitter page`
     },
+    {
+      flag: facebook,
+      url: `https://facebook.com/${facebook}`,
+      text: `${fullName}'s Facebook page`
+    }
   ];
 
   return (
@@ -60,7 +70,6 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
           </div>
         </a>
       ))}
-
     </Card>
   );
 }

@@ -1,5 +1,6 @@
 import { styles } from 'global';
 
+
 const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
   var disabledStyles = ' cursor-not-allowed' + (Icon ?
     ` text-gray-500` :
@@ -7,7 +8,7 @@ const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
   );
 
   var buttonStyles = styles.button;
-  var iconStyles = `flex items-center justify-center h-10 w-10 rounded-full ${!disabled && 'text-blue-500 hover:text-blue-600'}`;
+  var iconStyles = `items-center justify-center h-10 w-10 rounded-full ${!disabled ? 'text-blue-500 hover:text-blue-600' : ''}`;
 
   if (addStyles) {
     buttonStyles += ` ${addStyles}`;
@@ -28,7 +29,7 @@ const Button = ({Icon, text, onClick, disabled, aria, addStyles}) => {
     >
       {Icon ? (
         <div className={iconStyles}>
-          <Icon />
+          <Icon/>
         </div>
       ) : (
         <div>{text}</div>
