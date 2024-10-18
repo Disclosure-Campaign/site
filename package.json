@@ -2,6 +2,10 @@
   "name": "my-redux-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.16.0",
+    "npm": "10.8.1"
+  },
   "proxy": "http://192.168.86.46:5001",
   "dependencies": {
     "@headlessui/react": "^2.1.2",
