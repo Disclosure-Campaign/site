@@ -2,7 +2,7 @@
   "name": "my-redux-app",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.js",
+  "main": "index.js",
   "engines": {
     "node": "20.16.0",
     "npm": "10.8.1"
