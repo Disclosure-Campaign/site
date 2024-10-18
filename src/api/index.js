@@ -1,12 +1,14 @@
 import axios from 'axios';
 import _ from 'lodash';
 
+const apiUrl = process.env.REACT_APP_PROD_API;
+
 const api = {
   requestData: async params => {
     var result;
 
     try {
-      var response = await axios.get(`/${params.route}`, {params});
+      var response = await axios.get(`${apiUrl}/${params.route}`, {params});
 
       if (_.get(response, 'data')) {
         result = response.data;

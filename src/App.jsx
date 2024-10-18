@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -12,6 +12,7 @@ import Footer from './components/footer';
 const App = () => {
   const dispatch = useDispatch();
   const hasFetched = useRef(false);
+  const [error, setError] = useState(false);
 
   const memoizedAddPoliticians = useCallback(data => {
     dispatch(addPoliticians(data));
@@ -24,15 +25,19 @@ const App = () => {
   useEffect(() => {
     if (hasFetched.current) {
       const setEntities = async () => {
-        const {
-          keyedPoliticians, sortedPoliticians,
-          zipList, keyedZips
-        } = await api.requestData({
-          route: 'request_searchable_entities'
-        });
+        const result = await api.requestData({route: 'request_searchable_entities'});
 
-        memoizedAddPoliticians({keyedPoliticians, sortedPoliticians});
-        memoizedAddZips({zipList, keyedZips});
+        if (result) {
+          const {
+            keyedPoliticians, sortedPoliticians,
+            keyedZips, zipList
+          } = result;
+
+          memoizedAddPoliticians({keyedPoliticians, sortedPoliticians});
+          memoizedAddZips({keyedZips, zipList});
+        } else {
+          setError(true);
+        }
       }
 
       setEntities()
@@ -46,7 +51,7 @@ const App = () => {
       <div className='w-screen h-screen'>
         <Header/>
         <main className='w-screen h-[88vh] bg-gray-100'>
-          <RoutesComponent/>
+          <RoutesComponent error={error}/>
         </main>
         <Footer/>
       </div>
