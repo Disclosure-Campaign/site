@@ -22,7 +22,7 @@ This site was created by Justin Poser. I recently finished a graduate program in
 `
   },
   {
-    heading: 'Campaign Finance: Blog Coming Soon',
+    heading: 'Campaign Finance Blog Coming Soon',
     paragraph:
 `
 I'm working on a blog to go in-depth on campaign finance - please check back soon for updates.
