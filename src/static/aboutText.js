@@ -5,7 +5,7 @@ const aboutText = [
     heading: 'Introduction',
     paragraph:
 `
-Disclosure Campaign is a project about shedding light on the connection between politicians and campaign donations in America. When a wealthy individual, a corporation, or an advocacy organization gives money to help elect a politician, that influences the politician to make decisions that benefit that person or organization. Of course, not every contribution is part of a straightforward, 1-for-1 quid pro quo, but it is dangerously naive to ignore this phenomenon because each instance of buying influence is difficult to prove.
+Disclosure Campaign is a project about shedding light on the connection between politicians and campaign donations in America. When a wealthy individual, a corporation, or an advocacy organization gives money to help elect a politician, it influences the politician to make decisions that benefit that person or organization. Of course, not every contribution is part of a straightforward, 1-for-1 quid pro quo, but it is dangerously naive to ignore this phenomenon because each instance of buying influence is difficult to prove.
 \n\n
 There can be legitimate use of campaign donations, and in fact, some people argue that this practice is always legitimate. However, it is clear that many politicians are engaging in shameless, traditional corruption by taking money from wealthy individuals or organizations, then making decisions that further enrich those special interests. And often, those decisions disadvantage the constituents that the politician is supposed to represent.
 `
@@ -22,17 +22,17 @@ This site was created by Justin Poser. I recently finished a graduate program in
 `
   },
   {
-    heading: 'Campaign Finance: Blog Post Coming Soon',
+    heading: 'Campaign Finance: Blog Coming Soon',
     paragraph:
 `
-I'm working on a longer explainer on campaign finance but I wanted to get the initial tool out before the election.
+I'm working on a blog to go in-depth on campaign finance - please check back soon for updates.
 `
   },
   {
     heading: 'More on Campaign Finance Reform',
     paragraph:
 `
-I am passionate about this issue and I've researched it extensively, but there are well-established, large, non-profit organizations working on this issue, which may be better resources:
+I am passionate about this issue and I've researched it extensively, but there are well-established, large, non-profit organizations working on this issue, which I encourage you to visit:
 \n\n
 ((OpenSecrets|||www.opensecrets.org/about)): The leading nonprofit working to publicize campaign finance data. A lot of the data here is organized by them.
 \n\n

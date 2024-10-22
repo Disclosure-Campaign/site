@@ -1,6 +1,6 @@
 const copy = {
     siteName: 'Disclosure Campaign',
-    introText: 'Disclosure Campaign - uncover how elections can be bought',
+    introText: 'Disclosure Campaign: uncover how elections can be bought',
     dataSources: {
         congressGov: {
             name: 'Congress.gov',
