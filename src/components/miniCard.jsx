@@ -52,13 +52,9 @@ const MiniCard = ({fecId1, delay}) => {
                 alt={`${fullName} depiction`}
               />
             ) : (
-              !_.get(politician, 'dataGroups') ? (
-                <Loading {...{height: 'h-12', width: 'w-12'}}/>
-              ) : (
-                <div className='relative'>
-                  <UserIcon className='m-auto absolute h-28 top-4 left-5'/>
-                </div>
-              )
+              <div className='relative'>
+                <UserIcon className='m-auto absolute h-28 top-4 left-5'/>
+              </div>
             )}
           </div>
           <div className='text-wrap text-sm'><strong>{fullName}</strong></div>

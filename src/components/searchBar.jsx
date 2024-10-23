@@ -120,10 +120,13 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
 
   return (
     <div className='relative flex flex-col items-center border rounded-md p-4 space-y-4 w-full max-w-3xl mx-auto'>
+      <div className='font-bold'>
+        Start typing a politician's name or a zipcode, then select an option from the dropdown or tray.
+      </div>
       <div className='flex items-center w-full border rounded-md'>
         <Combobox value={searchTerm} onChange={handleInputChange}>
           <ComboboxInput
-            placeholder={`Search politicians by name or zipcode...`}
+            placeholder={`Enter politician's name or zipcode...`}
             onChange={e => handleSearchChange(e.target.value)}
             className='p-2 w-full focus:outline-none'
             onKeyDown={handleKeyDown}

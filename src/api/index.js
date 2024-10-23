@@ -1,7 +1,9 @@
 import axios from 'axios';
 import _ from 'lodash';
 
-const apiUrl = process.env.REACT_APP_PROD_API;
+const apiUrl = process.env.REACT_APP_ENV === 'prod' ?
+ process.env.REACT_APP_PROD_API :
+ process.env.REACT_APP_DEV_API;
 
 const api = {
   requestData: async params => {
