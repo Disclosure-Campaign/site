@@ -42,6 +42,10 @@ I am passionate about this issue and I've researched it extensively, but there a
 \n\n
 ((Represent Us|||represent.us/about)): An influential non-profit working on campaign finance and other issues of corruption in America.
 `
+  },
+  {
+    heading: 'Version 1.1',
+    paragraph: ''
   }
 ];
 
