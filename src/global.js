@@ -157,4 +157,13 @@ const states = {
     'WY': 'Wyoming'
 }
 
-export { copy, styles, cardSourceMap, states, menuLinks };
+const keyIdMap = {
+    politician: {
+      sponsoredLegislation: 'bioguideId', cosponsoredLegislation: 'bioguideId',
+      candContrib: 'opensecretsId', memProf: 'opensecretsId', bio: 'fecId1', links: 'fecId1'
+    },
+    bill: {},
+    org: {}
+  };
+
+export { copy, styles, cardSourceMap, states, menuLinks, keyIdMap };

@@ -5,7 +5,9 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import { styles, copy, cardSourceMap } from 'global';
 
-const Card = ({children, delay=0, width, cardKey, infoCallback, focused}) => {
+import Loading from 'components/loading';
+
+const Card = ({children, dataLoaded, delay=0, cardKey, infoCallback, focused}) => {
   const [isVisible, setIsVisible] = useState(false);
   const dataSource = copy.dataSources[cardSourceMap[cardKey]];
 
@@ -28,7 +30,7 @@ const Card = ({children, delay=0, width, cardKey, infoCallback, focused}) => {
       className={cardStyle}
       style={{
         transition: `opacity 1s ease ${delay}ms`,
-        width: width || '400px'
+        width: '400px'
       }}
     >
       {infoCallback && (
@@ -39,7 +41,13 @@ const Card = ({children, delay=0, width, cardKey, infoCallback, focused}) => {
           <InformationCircleIcon/>
         </div>
       )}
-      <div>{children}</div>
+      {dataLoaded ? (
+        <div>{children}</div>
+      ) : (
+        <div className='h-32'>
+          <Loading {...{height: 'h-16', width: 'w-16'}}/>
+        </div>
+      )}
       {dataSource && (
         <div className='border-t pt-3 mt-auto'>
           {dataSource.baseUrl ? (

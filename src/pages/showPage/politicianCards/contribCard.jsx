@@ -7,15 +7,14 @@ import Card from 'components/card';
 import { formatCurrency, nameToSlug } from 'helpers';
 
 const ContribCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
-  const {fullName, dataGroups} = politician;
-  const orgData = dataGroups[cardKey];
+  const { fullName, candContrib=[] } = politician;
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: !_.isEmpty(candContrib)}}>
       <p className='text-gray-700 mb-2 font-bold'>Top Contributors to {fullName}:</p>
       <table className='w-full border-collapse border-spacing-0'>
         <tbody>
-          {_.map(orgData, ({org, total}, index) => (
+          {_.map(candContrib, ({org, total}, index) => (
             <tr key={index} className='border-b border-gray-100'>
               <td className='text-left p-1 text-blue-500'>
                 <Link to={`/organization/${nameToSlug(org)}`}>{org}</Link>

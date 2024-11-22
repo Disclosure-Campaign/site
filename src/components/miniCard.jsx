@@ -23,7 +23,7 @@ const MiniCard = ({fecId1, delay}) => {
   var { fullName, currentTitle, party } = politician || {};
 
   const depictionImageUrl = _.get(
-    politician, 'dataGroups.bio.depictionImageUrl',
+    politician, 'bio.depictionImageUrl',
     _.get(politician, 'depictionImageUrl')
   );
 

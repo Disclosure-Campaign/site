@@ -10,10 +10,10 @@ const cleanText = text => {
 }
 
 const SummariesCard = ({entity: bill, delay, cardKey, infoCallback, focused}) => {
-  const { summaries } = bill.dataGroups;
+  const { summaries } = bill;
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: summaries}}>
       <p className='mb-2 font-bold'>Summaries:</p>
       {_.isEmpty(summaries) ? (
         <p className='mb-2'>

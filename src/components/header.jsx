@@ -11,13 +11,11 @@ import { copy, styles, menuLinks } from 'global';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname, key } = useLocation();
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-  var {pathname, key} = useLocation();
-  var showBackButton = pathname !== '/' || key !== 'default';
-
+  const showBackButton = pathname !== '/' || key !== 'default';
   const handleBackClick = () => navigate(key === 'default' ? '/' : -1);
 
   return (
@@ -52,7 +50,7 @@ const Header = () => {
         <Button {...{
           addStyles: `h-20 w-20 text-emerald-600 hover:text-emerald-500`,
           Icon: ArrowLeftCircleIcon,
-          onClick: handleBackClick,
+          onClick: handleBackClick
         }}/>
       </div>}
     </header>

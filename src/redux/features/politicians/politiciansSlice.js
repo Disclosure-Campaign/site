@@ -3,29 +3,15 @@ import _ from 'lodash';
 
 import api from 'api';
 
-var loading = {};
-
 const requestPoliticianDetails = createAsyncThunk(
   'politicians/requestPoliticianDetails',
-  async ({politicianIds, onlyBio}, { getState, rejectWithValue }) => {
+  async ({politicianIds, dataGroup}, { getState, rejectWithValue }) => {
     var { keyedPoliticians } = getState().politicians;
     var result;
 
-    var ids = _.filter(politicianIds, politicianId => {
-      var flag = true;
-
-      var isLoading = loading[politicianId];
-      var hasBio = onlyBio && keyedPoliticians[politicianId].dataGroups;
-      var hasAllData = _.get(keyedPoliticians[politicianId].dataGroups, 'memProf');
-
-      if (isLoading || hasBio || hasAllData) {
-        flag = false;
-      } else {
-        loading[politicianId] = true;
-      }
-
-      return flag;
-    });
+    var ids = _.filter(politicianIds, politicianId => (
+      !keyedPoliticians[politicianId][dataGroup]
+    ));
 
     if (_.isEmpty(ids)) {
       result = rejectWithValue('Data is already present or being fetched.');
@@ -35,8 +21,9 @@ const requestPoliticianDetails = createAsyncThunk(
           route: 'request_standard_data',
           entity_type: 'politician',
           ids: ids.sort().join('-'),
-          onlyBio
+          dataGroup
         });
+
       } catch (error) {
         result = rejectWithValue(error.message);
       }
@@ -50,11 +37,15 @@ export const politiciansSlice = createSlice({
   name: 'politicians',
   initialState: {
     keyedPoliticians: {},
-    sortedPoliticians: []
+    sortedPoliticians: [],
+    id: null
   },
   reducers: {
     addPoliticians: (state, action) => {
-      state.keyedPoliticians = action.payload.keyedPoliticians;
+      if (_.isEmpty(state.keyedPoliticians)) {
+        state.keyedPoliticians = action.payload.keyedPoliticians;
+      }
+
       state.sortedPoliticians = action.payload.sortedPoliticians;
     },
     addPolitician: (state, action) => {
@@ -74,23 +65,32 @@ export const politiciansSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(requestPoliticianDetails.pending, (state, action) => {
-        // const politicianId = action.meta.arg;
-        // state.loading[politicianId] = true;
+        // setTimeout(() => {
+        //   const { politicianIds, dataGroup } = action.meta.arg;
+
+        //   _.forEach(politicianIds, politicianId => {
+        //     state.keyedPoliticians[politicianId][dataGroup] = 'pending';
+        //   });
+        // });
       })
       .addCase(requestPoliticianDetails.fulfilled, (state, action) => {
         const { politicianIds, onlyBio } = action.meta.arg;
 
         _.forEach(politicianIds, politicianId => {
-          var politician = state.keyedPoliticians[politicianId];
-
-          politician.onlyBio = onlyBio;
-          politician.dataGroups = action.payload[politicianId];
-          delete loading[politicianId];
+          state.keyedPoliticians[politicianId] = {
+            ...state.keyedPoliticians[politicianId], ...action.payload[politicianId], onlyBio
+          };
         });
+
+        state.id = _.uniqueId();
       })
       .addCase(requestPoliticianDetails.rejected, (state, action) => {
-        const { politicianIds } = action.meta.arg;
-        _.forEach(politicianIds, politicianId => delete loading[politicianId]);
+        const { politicianIds, dataGroup } = action.meta.arg;
+
+        _.forEach(politicianIds, politicianId => {
+          delete state.keyedPoliticians[politicianId][dataGroup];
+        });
+
         state.error = action.payload;
       });
   }

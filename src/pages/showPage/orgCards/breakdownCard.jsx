@@ -6,7 +6,7 @@ import Card from 'components/card';
 import { formatCurrency } from 'helpers';
 
 const OrgCard = ({entity: org, delay, cardKey, infoCallback, focused}) => {
-  const {dems, repubs, gave_to_cand, gave_to_pac, gave_to_party, total} = org.dataGroups['org'];
+  const { dems, repubs, gave_to_cand, gave_to_pac, gave_to_party, total } = org;
 
   const copyFromNum = num => {
     num = parseInt(num)
@@ -45,7 +45,7 @@ const OrgCard = ({entity: org, delay, cardKey, infoCallback, focused}) => {
   ]
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: total}}>
       <p className='mb-2'><strong>Spending Breakdown</strong></p>
       <table className='w-full border-collapse border-spacing-0'>
         <tbody>

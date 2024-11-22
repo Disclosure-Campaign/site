@@ -7,10 +7,10 @@ import Card from 'components/card';
 import { formatCurrency, nameToSlug } from 'helpers';
 
 const OrgCard = ({entity: org, delay, cardKey, infoCallback, focused}) => {
-  const {orgname: orgName, orgid: orgId, total} = org.dataGroups[cardKey];
+  const {orgname: orgName='', orgid: orgId='', total} = org;
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: total}}>
       <p className='mb-2'><strong>{orgName}</strong></p>
       <p className='mb-2'>Total contributions: {formatCurrency(total)}</p>
       <div className='flex'>
