@@ -11,7 +11,7 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
   const {
     fullName, bioguideId, opensecretsId, fecId1,
     website, twitter, contactForm, facebook
-  } = _.extend(politician.dataGroups['bio'], politician);
+  } = _.assignIn(politician['bio'], politician);
 
   const slug = nameToSlug(fullName);
 
@@ -54,7 +54,7 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
   ];
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: true}}>
       <p className='mb-4'><strong>External Links:</strong></p>
       {_.map(_.filter(links, 'flag'), ({text, url}, index) => (
         <a

@@ -1,7 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
-
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import Card from 'components/card';
 
@@ -10,10 +7,10 @@ import { nameToSlug } from 'helpers';
 var osBaseUrl = 'https://www.opensecrets.org/2024-presidential-race';
 
 const PresidentialCard = ({entity: politician, delay, cardKey, focused}) => {
-  const { fullName, opensecretsId } = _.extend(politician.dataGroups['bio'], politician);
+  const { fullName, opensecretsId } = politician;
 
   return (
-    <Card {...{delay, cardKey, focused}}>
+    <Card {...{delay, cardKey, focused, dataLoaded: true}}>
       <div className='mb-2 font-bold'>Resources about finances for the 2024 presidential campaigns</div>
       <div className='mb-2'>
         A full breakdown of {fullName}'s fundraising on <a

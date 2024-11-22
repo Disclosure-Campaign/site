@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 
 import api from 'api';
-import { requestPoliticianDetails } from '../../redux/actions';
 
 import BioCard from './politicianCards/bioCard';
 import PresidentialCard from './politicianCards/presidentialCard';
@@ -23,9 +22,9 @@ import OrgCard from './orgCards/orgCard';
 import BreakdownCard from './orgCards/breakdownCard';
 
 import InfoPanel from 'components/infoPanel';
-import Loading from 'components/loading';
 
-// import { styles } from 'global';
+import { requestMultipleDataGroups } from 'helpers';
+import { keyIdMap } from 'global';
 
 const cardMaps = {
   politician: {
@@ -84,9 +83,8 @@ const columnMaps = {
   ]
 };
 
-const showCard = ({entity, cardKey: key}) => (
-  ((({breakdown: 'org', sponsors: 'bill'}[key] || key)) in entity.dataGroups) ||
-  _.includes(['bio', 'links'], key) ||
+const shouldShowCard = ({entity, cardKey: key}) => (
+  (entity.type !== 'politician') || entity[keyIdMap[entity.type][key]] ||
   (key === 'presidential' && _.includes(['P00009423', 'P80001571', 'P80000722'], entity.fecId1))
 );
 
@@ -96,8 +94,8 @@ const ShowPage = ({entityType}) => {
   const [infoParams, setInfoParams] = useState({});
 
   // politician
-  const {id, congress, type, orgSlug} = useParams();
-  const {keyedPoliticians} = useSelector(state => state.politicians);
+  const { id, congress, type, orgSlug } = useParams();
+  const { keyedPoliticians } = useSelector(state => state.politicians);
   const politician = _.get(keyedPoliticians, id);
 
   // bill
@@ -110,11 +108,8 @@ const ShowPage = ({entityType}) => {
   const cardKeys = cardKeyMap[entityType];
   const columns = columnMaps[entityType];
 
-  const memoizedAddPoliticianDetails = useCallback(id => {
-    dispatch(requestPoliticianDetails({
-      politicianIds: [id],
-      onlyBio: false
-    }));
+  const memoizedAddPoliticianDetails = useCallback(() => {
+    requestMultipleDataGroups({dispatch, politician, groups: 'all'});
   }, [dispatch]);
 
   const memoizedRequestBillData = useCallback(async () => {
@@ -135,27 +130,21 @@ const ShowPage = ({entityType}) => {
 
   useEffect(() => {
     if (entityType === 'politician') {
-      if (politician) {
-        try {
-          const setPoliticianDetails = () => {
-            memoizedAddPoliticianDetails(id);
-          }
-
-          setPoliticianDetails();
-        }
-        catch(error) {
-          setTimeout(() => setNotFound(true), 500);
-        }
+      try {
+        memoizedAddPoliticianDetails(id);
+      }
+      catch(error) {
+        // setTimeout(() => setNotFound(true), 500);
       }
     } else if (entityType === 'bill') {
       const requestBillData = async () => {
         try {
           const bill = await memoizedRequestBillData();
 
-          setBill({dataGroups: bill});
+          setBill(bill);
         }
         catch (error) {
-          setTimeout(() => setNotFound(true), 500);
+          // setTimeout(() => setNotFound(true), 500);
         }
       }
 
@@ -165,19 +154,16 @@ const ShowPage = ({entityType}) => {
         try {
           const org = await memoizedRequestOrgData();
 
-          setOrg({dataGroups: org});
+          setOrg(org);
         }
         catch (error) {
-          setTimeout(() => setNotFound(true), 500);
+          // setTimeout(() => setNotFound(true), 500);
         }
       }
-
-      setTimeout(() => setNotFound(true), 10000);
 
       requestOrgData();
     }
   }, [
-      entityType, keyedPoliticians, politician,
       id, congress, type, orgSlug,
       memoizedAddPoliticianDetails,
       memoizedRequestBillData,
@@ -188,8 +174,8 @@ const ShowPage = ({entityType}) => {
     setInfoParams(infoParams.cardKey === params.cardKey ? {} : params);
   }
 
-  const cardsFromKeys = ({cardKeys, entity, infoCallback, index}) => {
-    return _.map(_.filter(cardKeys, cardKey => showCard({cardKey, entity})), (cardKey, index2) => {
+  const cardsFromKeys = ({cardKeys, entity, infoCallback, index}) => (
+    _.map(_.filter(cardKeys, cardKey => shouldShowCard({cardKey, entity})), (cardKey, index2) => {
       var DataCard = cardMap[cardKey];
       var delay = 200 + index2 * 200 + index * 400;
 
@@ -202,8 +188,8 @@ const ShowPage = ({entityType}) => {
           key={cardKey}
         />
       );
-    });
-  }
+    })
+  );
 
   var entity;
 
@@ -215,16 +201,14 @@ const ShowPage = ({entityType}) => {
     entity = org;
   }
 
+  entity = entity || {};
+
   return (
-    !_.get(entity, 'dataGroups') || _.get(entity, 'onlyBio') ? (
-      notFound ? (
-        <div className='flex flex-col justify-center items-center h-screen'>
-          <div>Internet connection issue or malformed url.</div>
-          <div>If you came from the <Link to='/' className='text-blue-500'>homepage</Link> or there is another error, please submit feedback on the <Link to='/contact' className='text-blue-500'>contact page</Link>.</div>
-        </div>
-      ) : (
-        <Loading fullScreen={true}/>
-      )
+    notFound ? (
+      <div className='flex flex-col justify-center items-center h-screen'>
+        <div>Internet connection issue or malformed url.</div>
+        <div>If you came from the <Link to='/' className='text-blue-500'>homepage</Link> or there is another error, please submit feedback on the <Link to='/contact' className='text-blue-500'>contact page</Link>.</div>
+      </div>
     ) : (
       <div className='flex justify-center h-full p-4 pr-0 bg-gray-100'>
         <div className='flex justify-between gap-4 h-full overflow-y-auto'>

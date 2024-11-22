@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
@@ -8,14 +9,14 @@ const baseUrl = 'https://www.congress.gov/bill';
 
 const BillInfoCard = ({entity: bill, delay, cardKey, infoCallback, focused}) => {
   const {
-    title, introducedDate, latestAction, congress,
-    originChamber, number
-  } = bill.dataGroups[cardKey];
+    title='', introducedDate, latestAction={}, congress,
+    originChamber='', number
+  } = _.get(bill, 'attributes', {});
 
   const congressGovUrl = `${baseUrl}/${congress}th-congress/${originChamber.toLowerCase()}-bill/${number}`;
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: title}}>
       <p className='mb-2'><strong>{title}</strong></p>
       <p className='mb-2'>Introduced: {introducedDate}</p>
       <p className='mb-2'>Latest Update: {latestAction.text}</p>

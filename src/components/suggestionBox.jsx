@@ -14,7 +14,7 @@ const SuggestionBox = ({searchTerm, filteredEntities}) => {
   const memoizedAddPoliticianDetails = useCallback(ids => {
     dispatch(requestPoliticianDetails({
       politicianIds: ids,
-      onlyBio: true
+      dataGroup: 'bio'
     }));
   }, [dispatch]);
 

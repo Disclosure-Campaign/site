@@ -15,13 +15,14 @@ const BillCard = ({entity: politician, delay, cardKey, infoCallback, focused}) =
   const [selectedSubject, setSelectedSubject] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const {fullName, dataGroups} = politician;
-  const bills = dataGroups[cardKey];
+  const { fullName } = politician;
 
   const label = {
     'sponsoredLegislation': 'Legislation sponsored',
     'cosponsoredLegislation': 'Legislation co-sponsored'
   }[cardKey];
+
+  const bills = _.get(politician, cardKey, []);
 
   const processedBills = useMemo(
     () => _.map(bills, bill => ({...bill, dateObject: new Date(bill['date:'])})),
@@ -62,7 +63,7 @@ const BillCard = ({entity: politician, delay, cardKey, infoCallback, focused}) =
   const visibleBills = filteredBills.slice(0, displayCount);
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: !_.isEmpty(bills)}}>
       <p className='text-gray-700 mb-2 font-bold'>{label} by {fullName}:</p>
       {_.isEmpty(bills) ? (
         <p className='text-gray-700 mb-2'>

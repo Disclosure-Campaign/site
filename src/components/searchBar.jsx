@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import _ from 'lodash';
@@ -8,9 +8,9 @@ import { FixedSizeList } from 'react-window';
 import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption } from '@headlessui/react';
 import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/solid';
 
-import { requestPoliticianDetails } from '../redux/actions';
-
 import Button from './button';
+
+import { requestMultipleDataGroups } from 'helpers';
 // import { styles } from 'global';
 
 const idMap = {
@@ -40,6 +40,7 @@ const createNewFilter = () => ({...presets, id: _.uniqueId('filter_')});
 const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { keyedPoliticians } = useSelector(state => state.politicians);
 
   const [selectedOption, setSelectedOption] = useState({});
   const [isAdvanced, setIsAdvanced] = useState(false);
@@ -52,10 +53,11 @@ const SearchBar = ({searchTerm, handleSearchChange, filteredEntities}) => {
     var id = selectedOption[idMap[searchType]];
 
     if (searchType === 'politician') {
-      dispatch(requestPoliticianDetails({
-        politicianIds: [id],
-        onlyBio: false
-      }));
+      requestMultipleDataGroups({
+        dispatch,
+        politician: keyedPoliticians[id],
+        groups: 'all'
+      });
     }
 
     var filterString = _.isEmpty(filters) ? '' : _.trimEnd(

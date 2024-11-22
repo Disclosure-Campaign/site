@@ -6,15 +6,15 @@ import Card from 'components/card';
 import { formatCurrency } from 'helpers';
 
 const MemProfCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
-  const {fullName, dataGroups} = politician;
-  const {assetLow, assetHigh, assets} = dataGroups[cardKey];
+  const { fullName, memProf } = politician;
+  const { assetLow, assetHigh, assets=[] } = memProf || {};
 
   const totalHoldingsString = assetLow === assetHigh ?
     formatCurrency(assetLow) :
     `${formatCurrency(assetLow)} - ${formatCurrency(assetHigh)}`;
 
   return (
-    <Card {...{delay, cardKey, infoCallback, focused}}>
+    <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: assetLow}}>
       <p className='text-gray-700 mb-2 font-bold'>Assets owned by {fullName}:</p>
       <p className='text-gray-700 mb-2'>
         Estimated total holdings: {totalHoldingsString}
