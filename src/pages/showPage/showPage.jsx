@@ -84,8 +84,10 @@ const columnMaps = {
 };
 
 const shouldShowCard = ({entity, cardKey: key}) => (
-  (entity.type !== 'politician') || entity[keyIdMap[entity.type][key]] ||
-  (key === 'presidential' && _.includes(['P00009423', 'P80001571', 'P80000722'], entity.fecId1))
+  (entity[key] !== 'unavailable' || key === 'bio') && (
+    (entity.type !== 'politician') || entity[keyIdMap[entity.type][key]] ||
+    (key === 'presidential' && _.includes(['P00009423', 'P80001571', 'P80000722'], entity.fecId1))
+  )
 );
 
 const ShowPage = ({entityType}) => {
@@ -202,6 +204,8 @@ const ShowPage = ({entityType}) => {
   }
 
   entity = entity || {};
+
+  console.log({entity})
 
   return (
     notFound ? (

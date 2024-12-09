@@ -5,13 +5,16 @@ import api from 'api';
 
 const requestPoliticianDetails = createAsyncThunk(
   'politicians/requestPoliticianDetails',
-  async ({politicianIds, dataGroup}, { getState, rejectWithValue }) => {
-    var { keyedPoliticians } = getState().politicians;
+  async ({politicianIds, dataGroup}, {getState, rejectWithValue}) => {
+    // var { keyedPoliticians } = getState().politicians;
     var result;
 
-    var ids = _.filter(politicianIds, politicianId => (
-      !keyedPoliticians[politicianId][dataGroup]
-    ));
+    // ruins back button because of bizarre redux update timing issue
+    // var ids = _.filter(politicianIds, politicianId => (
+    //   !keyedPoliticians[politicianId][dataGroup]
+    // ));
+
+    var ids = politicianIds;
 
     if (_.isEmpty(ids)) {
       result = rejectWithValue('Data is already present or being fetched.');
@@ -46,7 +49,9 @@ export const politiciansSlice = createSlice({
         state.keyedPoliticians = action.payload.keyedPoliticians;
       }
 
-      state.sortedPoliticians = action.payload.sortedPoliticians;
+      if (_.isEmpty(state.sortedPoliticians)) {
+        state.sortedPoliticians = action.payload.sortedPoliticians;
+      }
     },
     addPolitician: (state, action) => {
       const { politicianId, politician } = action.payload;

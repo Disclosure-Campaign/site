@@ -8,8 +8,7 @@ import { UserIcon } from '@heroicons/react/24/outline';
 import { styles } from 'global';
 
 const BioCard = ({entity: politician, delay, cardKey, infoCallback, focused}) => {
-  const { fullName, party, currentTitle } = politician;
-  const { depictionImageUrl } = politician.bio || {};
+  const { fullName, party, currentTitle, depictionImageUrl } = politician;
 
   return (
     <Card {...{delay, cardKey, infoCallback, focused, dataLoaded: true}}>
