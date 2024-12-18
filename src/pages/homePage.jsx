@@ -20,23 +20,22 @@ const Home = () => {
     var entities = sortedPoliticians || [];
     var _filteredEntities;
 
-    switch(searchTerm) {
-      case searchTerm.length < 3:
-        _filteredEntities = entities;
-      case !isNaN(searchTerm):
-        if (searchTerm.length === 5) {
-          _filteredEntities = _.filter(entities, ({candidateOfficeState, candidateOfficeDistrict}) => (
-            _.some(keyedZips[searchTerm], ({state, district}) => (
-              (candidateOfficeDistrict === district) &&
-              (candidateOfficeState === state))
-            )
-          ));
-        }
-      default:
-        _filteredEntities = _.filter(entities, ({fullName, nickname}) => (
-          _.includes((fullName || '').toLowerCase(), searchTerm.toLowerCase()) ||
-          _.includes((nickname || '').toLowerCase(), searchTerm.toLowerCase())
+    if (searchTerm.length < 3){
+      _filteredEntities = entities;
+    } else if (!isNaN(searchTerm)) {
+      if (searchTerm.length === 5) {
+        _filteredEntities = _.filter(entities, ({candidateOfficeState, candidateOfficeDistrict}) => (
+          _.some(keyedZips[searchTerm], ({state, district}) => (
+            (candidateOfficeDistrict === district) &&
+            (candidateOfficeState === state))
+          )
         ));
+      }
+    } else {
+      _filteredEntities = _.filter(entities, ({fullName, nickname}) => (
+        _.includes((fullName || '').toLowerCase(), searchTerm.toLowerCase()) ||
+        _.includes((nickname || '').toLowerCase(), searchTerm.toLowerCase())
+      ));
     }
 
     setFilteredEntities(_filteredEntities);

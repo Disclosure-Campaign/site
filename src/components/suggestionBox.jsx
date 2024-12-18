@@ -21,7 +21,7 @@ const SuggestionBox = ({searchTerm, filteredEntities}) => {
   useEffect(() => {
     var ids = [];
 
-    if (!searchTerm) {
+    if (searchTerm.length < 3) {
       ids = _.slice(_.shuffle([
         'P80001571', // Trump
         'P00009423', // Harris
