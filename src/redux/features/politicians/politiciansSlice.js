@@ -82,9 +82,11 @@ export const politiciansSlice = createSlice({
         const { politicianIds, onlyBio } = action.meta.arg;
 
         _.forEach(politicianIds, politicianId => {
-          state.keyedPoliticians[politicianId] = {
-            ...state.keyedPoliticians[politicianId], ...action.payload[politicianId], onlyBio
-          };
+          _.forEach(action.payload[politicianId], (value, key) => {
+            if (value) state.keyedPoliticians[politicianId][key] = value;
+          });
+
+          state.keyedPoliticians[politicianId].onlyBio = onlyBio;
         });
 
         state.id = _.uniqueId();

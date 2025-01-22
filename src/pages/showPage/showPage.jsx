@@ -205,8 +205,6 @@ const ShowPage = ({entityType}) => {
 
   entity = entity || {};
 
-  console.log({entity})
-
   return (
     notFound ? (
       <div className='flex flex-col justify-center items-center h-screen'>

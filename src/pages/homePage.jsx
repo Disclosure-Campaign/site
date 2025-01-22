@@ -20,7 +20,7 @@ const Home = () => {
     var entities = sortedPoliticians || [];
     var _filteredEntities;
 
-    if (searchTerm.length < 3){
+    if (searchTerm.length < 3) {
       _filteredEntities = entities;
     } else if (!isNaN(searchTerm)) {
       if (searchTerm.length === 5) {
