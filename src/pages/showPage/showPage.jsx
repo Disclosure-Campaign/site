@@ -32,8 +32,8 @@ const cardMaps = {
     presidential: PresidentialCard,
     sponsoredLegislation: BillCard,
     cosponsoredLegislation: BillCard,
-    memProf: MemProfCard,
-    candContrib: ContribCard,
+    // memProf: MemProfCard,
+    // candContrib: ContribCard,
     links: LinksCard
   },
   bill: {
@@ -51,8 +51,8 @@ const cardKeyMap = {
   politician: [
     'bio',
     'presidential',
-    'candContrib',
-    'memProf',
+    // 'candContrib',
+    // 'memProf',
     'links',
     'sponsoredLegislation',
     'cosponsoredLegislation'
@@ -71,7 +71,8 @@ const cardKeyMap = {
 const columnMaps = {
   politician: [
     ['bio', 'presidential', 'sponsoredLegislation'],
-    ['candContrib', 'memProf', 'links', 'cosponsoredLegislation']
+    // ['candContrib', 'memProf', 'links', 'cosponsoredLegislation']
+    ['links', 'cosponsoredLegislation']
   ],
   bill: [
     ['bill', 'sponsors'],

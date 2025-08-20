@@ -15,10 +15,10 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
 
   const slug = nameToSlug(fullName);
 
-  const opensecretsUrl = _.includes(['P00009423', 'P80001571', 'P80000722'], fecId1) ?
-    `https://www.opensecrets.org/2024-presidential-race/${slug}/candidate?id=${opensecretsId}` :
-    `https://www.opensecrets.org/members-of-congress/${slug}/summary?cid=${opensecretsId}`
-  ;
+  // const opensecretsUrl = _.includes(['P00009423', 'P80001571', 'P80000722'], fecId1) ?
+  //   `https://www.opensecrets.org/2024-presidential-race/${slug}/candidate?id=${opensecretsId}` :
+  //   `https://www.opensecrets.org/members-of-congress/${slug}/summary?cid=${opensecretsId}`
+  // ;
 
   const links = [
     {
@@ -26,11 +26,11 @@ const LinksCard = ({entity: politician, delay, cardKey, infoCallback, focused}) 
       url: `https://www.congress.gov/member/${slug}/${bioguideId}`,
       text: `Page for ${fullName} on Congress.gov`
     },
-    {
-      flag: opensecretsId,
-      url: opensecretsUrl,
-      text: `Page for ${fullName} on OpenSecrets`
-    },
+    // {
+    //   flag: opensecretsId,
+    //   url: opensecretsUrl,
+    //   text: `Page for ${fullName} on OpenSecrets`
+    // },
     {
       flag: website,
       url: `${website}`,

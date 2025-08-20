@@ -34,7 +34,7 @@ I'm working on a blog to go in-depth on campaign finance - please check back soo
 `
 I am passionate about this issue and I've researched it extensively, but there are well-established, large, non-profit organizations working on this issue, which I encourage you to visit:
 \n\n
-((OpenSecrets|||www.opensecrets.org/about)): The leading nonprofit working to publicize campaign finance data. A lot of the data here is organized by them.
+((OpenSecrets|||www.opensecrets.org/about)): The leading nonprofit working to publicize campaign finance data. Update: Open Secrets has discontinued their API, so this site can no longer display their data. I'm working on finding a new data source to replace it.
 \n\n
 ((The Brennan Center for Justice|||www.brennancenter.org/issues/reform-money-politics)): An influential legal non-profit working on a number of critical issues.
 \n\n

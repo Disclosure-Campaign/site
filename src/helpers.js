@@ -21,8 +21,10 @@ export const extractBillVars = url => {
 export const nameToSlug = name => (name || '').toLowerCase().replace(/[.,]/g, ' ').replace(/\s+/g, '-');
 
 const allGroups = [
-  'bio', 'candContrib', 'sponsoredLegislation',
-  'memProf', 'cosponsoredLegislation'
+  // 'bio', 'candContrib', 'sponsoredLegislation',
+  // 'memProf', 'cosponsoredLegislation'
+  'bio', 'sponsoredLegislation',
+  'cosponsoredLegislation'
 ];
 
 export const requestMultipleDataGroups = ({dispatch, politician, groups}) => {
