@@ -45,7 +45,7 @@ const Home = () => {
     <div className={`min-h-screen flex flex-col items-center bg-gray-100 ${styles.border} p-4`}>
       <main className="flex flex-col items-center w-full mt-8 md:mt-16">
         <h1 className="text-2xl font-bold mb-2">{copy.introText}</h1>
-        <h3 className="text-l font-bold mb-12">Update: Open Secrets has discontinued their API, so this site can no longer display their data.</h3>
+        <h3 className="text-l font-bold mb-12">Update: some data sources have discontinued their APIs, so this site can no longer display their data.</h3>
         <SearchBar {...{searchTerm, handleSearchChange, filteredEntities}}/>
         <SuggestionBox {...{searchTerm, filteredEntities}}/>
       </main>
