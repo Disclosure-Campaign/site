@@ -10,7 +10,7 @@ const FinancialCard = ({entity, dataLoaded, delay, cardKey, infoCallback, focuse
 
   if (!financials) {
     return (
-      <Card {...{ delay, cardKey, infoCallback, focused, dataLoaded: true }}>
+      <Card {...{ delay, cardKey, infoCallback, focused, dataLoaded: !_.isEmpty(financials) }}>
         <p>No financial data available</p>
       </Card>
     );
