@@ -24,7 +24,7 @@ const allGroups = [
   // 'bio', 'candContrib', 'sponsoredLegislation',
   // 'memProf', 'cosponsoredLegislation'
   'bio', 'sponsoredLegislation',
-  'cosponsoredLegislation'
+  'cosponsoredLegislation', 'financials'
 ];
 
 export const requestMultipleDataGroups = ({dispatch, politician, groups}) => {
