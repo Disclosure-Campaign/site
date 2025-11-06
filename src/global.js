@@ -13,6 +13,20 @@ const copy = {
 
             `
         },
+        fec: {
+            name: 'Federal Election Commission',
+            baseUrl: 'www.fec.gov',
+            shortDescription: `
+                The Federal Election Commission (FEC) is the independent regulatory agency
+                charged with administering and enforcing federal campaign finance law.
+            `,
+            longDescription: `
+                The FEC has jurisdiction over the financing of campaigns for the U.S. House,
+                Senate, Presidency and Vice Presidency. Established in 1975, the FEC is
+                composed of six Commissioners who are appointed by the President and
+                confirmed by the Senate.
+            `
+        },
         openSecrets: {
             name: 'Open Secrets',
             baseUrl: 'www.opensecrets.org',
@@ -57,6 +71,7 @@ const cardSourceMap = {
     cosponsoredLegislation: 'congressGov',
     memProf: 'openSecrets',
     candContrib: 'openSecrets',
+    financials: 'fec',
     bill: 'congressGov',
     summaries: 'congressGov',
     sponsors: 'congressGov',
@@ -160,7 +175,8 @@ const states = {
 const keyIdMap = {
     politician: {
       sponsoredLegislation: 'bioguideId', cosponsoredLegislation: 'bioguideId',
-      candContrib: 'opensecretsId', memProf: 'opensecretsId', bio: 'fecId1', links: 'fecId1'
+      candContrib: 'opensecretsId', memProf: 'opensecretsId', bio: 'fecId1', links: 'fecId1',
+      financials: 'fecId1'
     },
     bill: {},
     org: {}

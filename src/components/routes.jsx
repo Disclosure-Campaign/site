@@ -6,6 +6,7 @@ import Home from '../pages/homePage';
 import ShowPage from '../pages/showPage/showPage';
 import About from '../pages/aboutPage';
 import Contact from '../pages/contactPage';
+import MapPage from '../pages/mapPage';
 import NotFound from '../pages/404';
 
 const pages = [
@@ -13,6 +14,7 @@ const pages = [
   {path: '/politician/:id', element: <ShowPage entityType='politician'/>},
   {path: '/bill/:congress/:type/:id', element: <ShowPage entityType='bill'/>},
   {path: '/organization/:orgSlug', element: <ShowPage entityType='org'/>},
+  // {path: '/map', element: <MapPage/>},  // Temporarily hidden while fixing map issues
   {path: '/about', element: <About/>},
   {path: '/contact', element: <Contact/>},
   {path: '/*', element: <NotFound/>}

@@ -10,9 +10,10 @@ import api from 'api';
 import BioCard from './politicianCards/bioCard';
 import PresidentialCard from './politicianCards/presidentialCard';
 import BillCard from './politicianCards/billCard';
-import MemProfCard from './politicianCards/memProfCard';
-import ContribCard from './politicianCards/contribCard';
+// import MemProfCard from './politicianCards/memProfCard';
+// import ContribCard from './politicianCards/contribCard';
 import LinksCard from './politicianCards/linksCard';
+import FinancialCard from './politicianCards/financialCard';
 
 import BillInfoCard from './billCards/billInfoCard';
 import SummariesCard from './billCards/summariesCard';
@@ -32,6 +33,7 @@ const cardMaps = {
     presidential: PresidentialCard,
     sponsoredLegislation: BillCard,
     cosponsoredLegislation: BillCard,
+    financials: FinancialCard,
     // memProf: MemProfCard,
     // candContrib: ContribCard,
     links: LinksCard
@@ -51,9 +53,10 @@ const cardKeyMap = {
   politician: [
     'bio',
     'presidential',
+    'links',
+    'financials',
     // 'candContrib',
     // 'memProf',
-    'links',
     'sponsoredLegislation',
     'cosponsoredLegislation'
   ],
@@ -72,7 +75,7 @@ const columnMaps = {
   politician: [
     ['bio', 'presidential', 'sponsoredLegislation'],
     // ['candContrib', 'memProf', 'links', 'cosponsoredLegislation']
-    ['links', 'cosponsoredLegislation']
+    ['links', 'financials', 'cosponsoredLegislation']
   ],
   bill: [
     ['bill', 'sponsors'],
