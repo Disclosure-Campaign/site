@@ -10,7 +10,7 @@ const FinancialCard = ({entity, dataLoaded, delay, cardKey, infoCallback, focuse
 
   if (!financials) {
     return (
-      <Card {...{ delay, cardKey, infoCallback, focused, dataLoaded: !_.isEmpty(financials) }}>
+      <Card {...{ delay, cardKey, infoCallback, focused, dataLoaded: true }}>
         <p>No financial data available</p>
       </Card>
     );
@@ -31,7 +31,7 @@ const FinancialCard = ({entity, dataLoaded, delay, cardKey, infoCallback, focuse
   ];
 
   return (
-    <Card {...{ delay, cardKey, infoCallback, focused, dataLoaded: true }}>
+    <Card {...{ delay, cardKey, infoCallback, focused, dataLoaded: !_.isEmpty(financials) }}>
       <div>
         <p className='text-gray-700 mb-2 font-bold'>Campaign Finances</p>
         <table className='w-full border-collapse border-spacing-0 mb-4'>
